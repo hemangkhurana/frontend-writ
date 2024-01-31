@@ -1,0 +1,58 @@
+.headerContainer {
+    width: 100%;
+    height: 8vh;
+    background: rgb(9,35,101);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logoContainer {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.logoSpan {
+    font-size: 5vh;
+    color: white;
+    margin-left: 20px;
+}
+
+.logoImg {
+    width: 30px;
+    filter: invert(100%);
+    margin-right: -10px;
+}
+
+.logo1Img {
+    margin: 0px;
+    padding: 0px;
+    height: 150px;
+    margin-left: -10px;
+    mix-blend-mode: color-dodge;
+    /* filter: invert(1);
+    background: blue; */
+}
+
+.rightContainer {
+    height: 40px;
+    display: flex;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.logoutBtn {
+    margin-left: 10px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+}
+
+
+@media screen and (max-width: 1100px) {
+    .headerContainer {
+        height: 6vh;
+    }
+
+}

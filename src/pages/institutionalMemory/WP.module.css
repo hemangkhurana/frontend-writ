@@ -1,0 +1,38 @@
+.headerDiv {
+    display : flex;
+    margin: 10px 0;
+}
+
+.filterBtn {
+    margin: 0 100px 0 10px !important;
+}
+
+.searchField {
+    display : flex;
+    width: 500px;
+}
+
+.searchBtnDiv {
+    display: flex;
+}
+
+.addBtnDiv {
+    display: flex;
+    position: absolute;
+    right: 20px;
+}
+
+.tableContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.tableBody {
+    max-width: 80%;
+    position: absolute;
+    margin: 50px 0 0 0;
+}
+
+.tableDataRow {
+    height: 10px;
+}

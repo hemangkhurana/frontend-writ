@@ -1,0 +1,330 @@
+/* .login-bg {
+  background-image: url("/public/background.png");
+} */
+
+.bg1 {
+  background-image: url("/public/background.png");
+  /* height: 100%;
+  width: 100%; */
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.backgroundLogin {
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  z-index: 1;
+}
+
+.img1 {
+  position: absolute;
+  height: 150px;
+  top: 20px;
+  left: 20px;
+}
+
+.img2 {
+  position: absolute;
+  height: 120px;
+  top: 20px;
+  right: 20px;
+}
+
+.mainDiv {
+  /* height: 70vh; */
+  width: 500px;
+  /* margin-top: 50px; */
+  background: rgba(225, 225, 225, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  position: absolute;
+  top: 120px;
+}
+
+.mainDivHeader {
+  position: relative;
+  height: 100px;
+  width: auto;
+  padding-top: 80px;
+}
+
+.nirnayaImg {
+  height: 90px;
+  mix-blend-mode: difference;
+  position: absolute;
+  top: 0px;
+  right: 20px;
+}
+
+.headingSpan {
+  font-size: 25px;
+  font-weight: 500px;
+}
+
+.loginForm {
+  margin-top: 30px;
+}
+
+.loginFormDiv {
+  display: flex;
+  flex-direction: column;
+  align-items: centers;
+}
+
+.loginUsername {
+  font-size: 20px;
+}
+
+.loginUsernameForm, .loginPasswordForm {
+  height: 50px;
+}
+
+.loginPassword {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.loginButton {
+  width: 100%;
+  font-size: 19px;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.signUpText {
+  margin-top: 40px;
+  font-size: 18px;
+}
+
+.signUpButton {
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
+}
+
+
+@media screen and (max-width: 1100px) {
+  .img1 {
+    height: 100px;
+  }
+
+  .img2 {
+    height: 90px;
+  }
+
+  .mainDiv {
+  }
+
+  .nirnayaImg {
+    /* right: 10px; */
+  }
+}
+
+
+@media screen and (max-width: 768px){
+
+  .mainDiv {
+    width: 400px;
+  }
+
+  .nirnayaImg {
+    height: 70px;
+    /* right: 0; */
+  }
+
+  .mainDivHeader {
+    padding-top: 50px;
+  }
+
+  .headingSpan {
+    font-size: 22px;
+  }
+
+  .loginForm {
+    margin-top: 10px;
+  }
+
+  .signUpText {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+
+  .img1 {
+    height: 80px;
+  }
+
+  .img2 {
+    height: 70px;
+  }
+
+  .mainDiv {
+    width: 300px;
+  }
+
+  .loginForm{
+    margin-top: 0;
+  }
+
+  .nirnayaImg {
+    height: 50px;
+  }
+
+  .loginUsername {
+    font-size: 15px;
+  }
+
+  .loginPassword {
+    font-size: 15px;
+    margin-top: 15px;
+  }
+
+  .loginUsernameForm, .loginPasswordForm {
+    height: 30px;
+  }
+
+  .signUpText {
+    margin-top: 20px;
+  }
+
+  .loginButton, .signUpButton {
+    padding: 5px;
+  }
+}
+
+/* @media screen and (max-height: ) */
+
+
+
+/* .css1 {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  background-image: url("/Backgroundlogin.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.css2 {
+  padding: 3%;
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.css3 {
+  color: #fff;
+  font-size: 192px;
+  font-family: "Anton", sans-serif;
+  vertical-align: middle;
+  letter-spacing: 4px;
+  margin: 8px 16px;
+  background: -webkit-linear-gradient(#f89936, #fff, #3e890e);
+  -webkit-background-clip: text;
+  background-clip: inherit;
+  -webkit-text-fill-color: transparent;
+}
+
+.css4 {
+  width: 50%;
+  vertical-align: middle;
+  -webkit-filter: invert(100%);
+  filter: invert(100%);
+}
+
+.css5 {
+  width: 45%;
+  background: transparent;
+  border: none;
+  border-radius: 5px;
+  border-bottom: 2px solid white;
+  color: white;
+  padding: 4px 12px;
+  text-align: center;
+  font-size: 16px;
+  font-family: "Hind Siliguri", sans-serif;
+  margin: 0px 0px 30px 0px;
+  :focus {
+    outline: none;
+  }
+  ::placeholder {
+    color: white;
+    opacity: 1;
+  }
+}
+
+.css6 {
+  font-family: "Poppins", sans-serif;
+  background-color: rgb(255, 255, 255, 0.2);
+  padding: 5%;
+  opacity: 100%;
+  text-align: left;
+  border-radius: 8px;
+  margin: 16px;
+  @media (max-width: 768px) {
+    font-size: 0.9em;
+  }
+}
+
+.css7 {
+  color: red;
+  white-space: nowrap;
+  font-size: 1em;
+}
+
+.css8 {
+  display: inline-block;
+  border-radius: 3px;
+  padding: 0.5rem 0;
+  margin: 0.8rem 1rem;
+  width: 11rem;
+  height: 40px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  border: 2px solid white;
+  transition: 0.5s;
+  cursor: pointer;
+  :hover {
+    background-color: rgb(255, 255, 255, 0.4);
+  }
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+
+.css9 {
+  display: inline-block;
+  border-radius: 3px;
+  padding: 0.5rem 0;
+  margin: 0.5rem 1rem;
+  width: 11rem;
+  height: 40px;
+
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+  transition: 0.5s;
+  :hover {
+    background-color: rgb(255, 255, 255, 0.4);
+  }
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  text-decoration: none;
+} */

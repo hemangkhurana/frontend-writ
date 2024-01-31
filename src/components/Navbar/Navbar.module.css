@@ -1,0 +1,20 @@
+.navbarContainer {
+    width: 100px;
+    height: 92vh;
+    padding: 0px;
+    background: #efefef;
+}
+
+.iconContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nameContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

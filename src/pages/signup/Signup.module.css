@@ -1,0 +1,83 @@
+.img1 {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    height: 150px;
+}
+
+.img2 {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 120px;
+}
+
+.mainDiv {
+    /* height: 70vh; */
+    width: 800px;
+    background: rgba(225, 225, 225, 0.8);
+    border-radius: 20px;
+    padding: 20px;
+    position: absolute;
+    top: 150px;
+}
+
+.mainDivHeader {
+    position: relative;
+    height: 100px;
+    padding-top: 80px;
+    display: flex;
+    justify-content: center;
+}
+
+.nirnayaImg {
+    height: 90px;
+    mix-blend-mode: difference;
+    position: absolute;
+    top: 0px;
+    right: 20px;
+}
+
+.headingSpan {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.signupFormDiv {
+    display: flex;
+    justify-content: space-around;
+}
+
+.formGroup {
+    margin-top: 10px;
+}
+
+.signUpButtonDiv {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: centers;
+}
+
+.signUpButton {
+    font-size: 20px;
+    width: 200px;
+}
+
+@media screen and (max-width: 1000px) {
+    .img1 {
+      height: 100px;
+    }
+  
+    .img2 {
+      height: 90px;
+    }
+
+    .mainDiv {
+        width: 600px;
+    }
+
+  }
+@media screen and (max-width: 768px){
+
+}

@@ -1,3 +1,4 @@
+@import url("https://fonts.cdnfonts.com/css/samarkan");
 .App {
   text-align: center;
 }
@@ -13,6 +14,10 @@
   }
 }
 
+.form-signup{
+  font-size: 20px;
+  
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -35,4 +40,39 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.nav-link-inactive {
+  display: block;
+  text-decoration: none;
+  align-items: center;
+  color: #646464;
+}
+.nav-link-inactive:hover {
+  background-color: #ddd;
+}
+
+.nav-link-inactive.active {
+  background-color: #eee;
+}
+
+.nav-link-inactive i {
+  margin-right: 10px;
+}
+.nav-link:hover {
+  background-color: #ddd;
+}
+
+.nav-link.active {
+  background-color: #eee;
+}
+
+.nav-link i {
+  margin-right: 10px;
 }
