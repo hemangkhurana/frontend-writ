@@ -12,6 +12,10 @@ export default function SixthStep({onPrev}) {
     
     const handleSubmit = async() => {
         try {
+            if (writCloseDate == '' || writClose == false){
+                alert("Please fill all required fields")
+                return;
+            }
             const formData = new FormData();
             formData.append('writNumber', writNumber);
             formData.append('work', 'sixth');
@@ -26,8 +30,10 @@ export default function SixthStep({onPrev}) {
               });
               const responseData = await response.json();
               if (responseData.success) {
+                alert('Writ Data has been uploaded successfully');
                 console.log('Sixth step successful');
               } else {
+                alert('Some error has occured');
                 console.error('Failed: problem in backend', responseData.error);
               }
         } catch (error) {
@@ -50,6 +56,7 @@ export default function SixthStep({onPrev}) {
                         type="date"
                         defaultValue={writCloseDate}
                         onChange={(e) => setWritCloseDate(e.target.value)}
+                        required
                     />
                 </Grid>
                 <Grid item xs={6} sx={{ display:'flex', alignItems:'center', }}>
@@ -59,6 +66,7 @@ export default function SixthStep({onPrev}) {
                                 checked={writClose}
                                 onChange={(e) => setWritClose(e.target.checked)}
                                 color="primary"
+                                required
                             />
                         }
                         label="Close"

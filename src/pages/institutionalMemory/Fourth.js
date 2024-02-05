@@ -100,8 +100,21 @@ const FourthStep = React.memo(
                 }
             }
             else{
+                for (const data of postData){
+                    if (!data){
+                        continue;
+                    }
+                    if (data['writNumber'] == '' || data['counterDate'] == ''){
+                        alert("Please fill all required fields")
+                        return;
+                    }
+                }
+
                 let flag = 1;
                 for (const data of postData) {
+                    if (!data){
+                        continue;
+                    }
                     const formData = new FormData();
                     Object.entries(data).forEach(([key, value]) => {
                         formData.append(key, value);
@@ -225,6 +238,7 @@ const FourthStep = React.memo(
                                                                                     value={
                                                                                         writNumber
                                                                                     }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -249,6 +263,7 @@ const FourthStep = React.memo(
                                                                                     //     enabledAccordionId !==
                                                                                     //     index
                                                                                     // }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />

@@ -86,23 +86,37 @@ const ThirdStep = React.memo(
                         },
                         body: formData,
                     });
-            
+                    
                     // Check if the HTTP request was successful (status code in the range 200-299)
                     if (response.ok) {
-                    // If the response is successful, log a success message
-                    console.log('Data sent successfully');
-                } else {
-                    // If the response is not successful, throw an error
-                    throw new Error('Network response was not ok');
-                }
-            } catch (error) {
-                // Handle any errors that occurred during the fetch
+                        // If the response is successful, log a success message
+                        console.log('Data sent successfully');
+                    } else {
+                        // If the response is not successful, throw an error
+                        throw new Error('Network response was not ok');
+                    }
+                } catch (error) {
+                    // Handle any errors that occurred during the fetch
                     console.error('Error sending data:', error);
                 }
             }
+
             else{
+                for (const data of postData){
+                    if (!data){
+                        continue;
+                    }
+                    if (data['writNumber'] == '' || data['counterDate'] == ''){
+                        alert("Please fill all required fields")
+                        return;
+                    }
+                }
+                
                 let flag = 1;
                 for (const data of postData) {
+                    if (!data){
+                        continue;
+                    }
                     const formData = new FormData();
                     Object.entries(data).forEach(([key, value]) => {
                         formData.append(key, value);
@@ -228,6 +242,7 @@ const ThirdStep = React.memo(
                                                                                     value={
                                                                                         writNumber
                                                                                     }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -252,6 +267,7 @@ const ThirdStep = React.memo(
                                                                                     //     enabledAccordionId !==
                                                                                     //     index
                                                                                     // }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />

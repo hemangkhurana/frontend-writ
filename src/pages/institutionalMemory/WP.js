@@ -17,6 +17,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const WP = () => {
     // const demoData = [
@@ -73,6 +74,8 @@ const WP = () => {
 
         writClose, setWritClose,
         writCloseDate, setWritCloseDate,
+
+        isAddNew, setIsAddNew,
     } = useWrit();
 
     const [demoData, setDemoData] = useState([]);
@@ -127,15 +130,20 @@ const WP = () => {
     
     useEffect(() => {
         fetchLatestWritData();
+        setIsAddNew(false);
     },[]);
+
+    useEffect(() => {
+        console.log("New isAddNew value : ", isAddNew);
+    },[isAddNew]);
     
 
     const handleSearch = async () => {
         try{
             const postData =  {searchText, filterWritRespondentNames, filterWritPriority, filterWritDepartment, filterProject, filterSurveyNumber, filterRevenueVillage, filterStartDate, filterEndDate};
-            for (const key in postData){
-                console.log(key, postData[key])
-            }
+            // for (const key in postData){
+            //     console.log(key, postData[key])
+            // }
             const response = await fetch(getBaseUrl() + "writ/filterWrit", {
                 method: "POST",
                 headers: {
@@ -146,9 +154,9 @@ const WP = () => {
             });
             const responseData = await response.json();
             if (responseData.success) {
-                for (const key in responseData.data) {
-                    console.log(key +  " " +  responseData.data[key])
-                }
+                // for (const key in responseData.data) {
+                //     console.log(key +  " " +  responseData.data[key])
+                // }
                 const updatedData = responseData.data.map((item) => item);
                 setFilteredData(updatedData);
                 setSearchApplied(true);
@@ -172,7 +180,7 @@ const WP = () => {
 
         setWritDate("")
         setWritPetitionerName("")
-        setWritRespondentNames("")
+        setWritRespondentNames([])
         setWritPetitionerPrayer("")
         setWritCourtOrder("")
         setWritDcComments("")
@@ -192,6 +200,7 @@ const WP = () => {
 
         setWritClose(false)
         setWritCloseDate("");
+        setIsAddNew(true);
     };
     
 

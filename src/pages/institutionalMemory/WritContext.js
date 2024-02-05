@@ -6,7 +6,7 @@ export const WritProvider = ({ children }) => {
     const [writNumber, setWritNumber] = useState('');
     const [writDate, setWritDate] = useState('');
     const [writPetitionerName, setWritPetitionerName] = useState('');
-    const [writRespondentNames, setWritRespondentNames] = useState('');
+    const [writRespondentNames, setWritRespondentNames] = useState([]);
     const [writPetitionerPrayer, setWritPetitionerPrayer] = useState('');
     const [writCourtOrder, setWritCourtOrder] = useState('');
     const [writDcComments, setWritDcComments] = useState('');
@@ -48,6 +48,8 @@ export const WritProvider = ({ children }) => {
 
     const [writClose, setWritClose] = useState(false);
     const [writCloseDate, setWritCloseDate] = useState("");
+
+    const [isAddNew, setIsAddNew] = useState(false);
 
     useEffect(() => {
         console.log('writDate updated in context:', writDate);
@@ -159,6 +161,7 @@ export const WritProvider = ({ children }) => {
 
         counterFileAttachment, setCounterFileAttachment,
         courtOrderFileAttachment, setCourtOrderFileAttachment,
+        isAddNew, setIsAddNew,
 
         handleDownloadWritFileAttachment,
         handleDownloadRemarkFileAttachment,

@@ -31,6 +31,10 @@ export default function SecondStep({ onPrev, onNext }) {
 
     const handleSubmit = async () => {
         try {
+            if (writNumber == '' || remarkDate == ''){
+                alert("Please fill all required fields")
+                return;
+            }
             const formData = new FormData();
             formData.append('work', 'second');
             formData.append('writNumber', writNumber);
@@ -48,8 +52,10 @@ export default function SecondStep({ onPrev, onNext }) {
               });
               const responseData = await response.json();
               if (responseData.success) {
+                alert('Writ Data has been uploaded successfully');
                 console.log('Writ added successfully');
               } else {
+                alert('Some error has occured');
                 console.error('Failed to add writ: problem in backend', responseData.error);
               }
             } catch (error) {
@@ -70,6 +76,7 @@ export default function SecondStep({ onPrev, onNext }) {
                 body: JSON.stringify({ writNumber, remarkFileAttachment }),
             });
             if (!response.ok) {
+                alert('Unable to download pdf, some error has occured')
                 throw new Error('Failed to download file');
               }
               const blob = await response.blob();
@@ -97,6 +104,8 @@ export default function SecondStep({ onPrev, onNext }) {
                         placeholder="Write Writ Number"
                         value={writNumber}
                         onChange={(e) => setWritNumber(e.target.value)}
+                        disabled
+                        required
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -110,6 +119,7 @@ export default function SecondStep({ onPrev, onNext }) {
                         type="date"
                         defaultValue={remarkDate}
                         onChange={(e) => setRemarkDate(e.target.value)}
+                        required
                     />
                 </Grid>
 
