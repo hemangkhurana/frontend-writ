@@ -117,7 +117,6 @@ const Filter = ({ open, onClose, selectedValue }) => {
     
     const handleApply = async () => {
         try{
-            console.log("oppppppppppp")
             const postData =  {searchText, filterWritRespondentNames, filterWritPriority, filterStatus, filterWritDepartment, filterProject, filterStartDate, filterEndDate};
             console.log(postData)
             const response = await fetch(getBaseUrl() + "writ/filterWrit", {
