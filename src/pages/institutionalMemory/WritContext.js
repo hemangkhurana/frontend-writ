@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const WritContext = createContext();
 
 export const WritProvider = ({ children }) => {
-    const [writNumber, setWritNumber] = useState('21');
+    const [writNumber, setWritNumber] = useState('');
     const [writDate, setWritDate] = useState('');
     const [writPetitionerName, setWritPetitionerName] = useState('');
     const [writRespondentNames, setWritRespondentNames] = useState('');
