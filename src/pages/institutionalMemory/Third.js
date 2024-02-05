@@ -111,7 +111,7 @@ const ThirdStep = React.memo(
                         return;
                     }
                 }
-                
+
                 let flag = 1;
                 for (const data of postData) {
                     if (!data){
@@ -123,6 +123,9 @@ const ThirdStep = React.memo(
                     });
                     formData.append('writNumber', writNumber);
                     formData.append('flag', flag);
+                    if (flag==1){
+                        formData.append('counterFileAttachment', counterFileAttachment);
+                    }
                     flag = 0;
                 
                     try {
@@ -193,6 +196,34 @@ const ThirdStep = React.memo(
         const handleUpdateOkConfirmation = () => {
             handleUpdateConfirmationClose();
         }
+
+        const downloadPdf = async () => {
+            try {
+                const response = await fetch(getBaseUrl() + 'writ/downloadPdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify({ writNumber, counterFileAttachment }),
+                });
+                if (!response.ok) {
+                    alert('Unable to download pdf, some error has occured')
+                    throw new Error('Failed to download file');
+                  }
+                  const blob = await response.blob();
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'file.pdf';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+    
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        };
             
 
         return (
@@ -412,13 +443,20 @@ const ThirdStep = React.memo(
                                     type="file"
                                     label="Attach File"
                                     name="counterFileAttachment"
-                                    multiple
+                                    // multiple
                                     onChange={(e) =>
-                                        setCounterFileAttachment(e.target.files)
+                                        setCounterFileAttachment(e.target.files[0])
                                     }
                                 />
                             </Grid>
+                            <Grid>
+                                <Button onClick={downloadPdf} disabled = {!counterFileAttachment}>
+                                        Download Already present pdf
+                                    </Button>
+                            </Grid>
+                            
                         </Grid>
+
                     <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
                         <Button onClick={onPrev} sx={{ mr: 1 }}>
                             <NavigateBeforeIcon fontSize="large" />

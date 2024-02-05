@@ -163,18 +163,18 @@ export default function SecondStep({ onPrev, onNext }) {
                             setRemarkFileAttachment(e.target.files[0])
                         }
                     />
-                    {remarkFileAttachment && (
+                    {/* {remarkFileAttachment && (
                         <Button
                             variant="text"
                             onClick={handleDownloadRemarkFileAttachment}
                         >
                             {remarkFileAttachment.name}
                         </Button>
-                    )}
+                    )} */}
                 </Grid>
                 <Grid>
                     <Button onClick={downloadPdf} disabled = {!remarkFileAttachment}>
-                            Download Already present pdf
+                            Download Already present pdf : {remarkFileAttachment.name}
                         </Button>
                 </Grid>
             </Grid>

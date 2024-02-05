@@ -121,6 +121,9 @@ const FourthStep = React.memo(
                     });
                     formData.append('writNumber', writNumber);
                     formData.append('flag', flag);
+                    if (flag==1){
+                        formData.append('courtOrderFileAttachment', courtOrderFileAttachment);
+                    }
                     flag = 0;
                 
                     try {
@@ -189,6 +192,35 @@ const FourthStep = React.memo(
         const handleUpdateOkConfirmation = () => {
             handleUpdateConfirmationClose();
         }
+
+        const downloadPdf = async () => {
+            try {
+                console.log(courtOrderFileAttachment);
+                const response = await fetch(getBaseUrl() + 'writ/downloadPdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify({ writNumber, courtOrderFileAttachment }),
+                });
+                if (!response.ok) {
+                    alert('Unable to download pdf, some error has occured')
+                    throw new Error('Failed to download file');
+                  }
+                  const blob = await response.blob();
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'file.pdf';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+    
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        };
             
 
         return (
@@ -392,11 +424,16 @@ const FourthStep = React.memo(
                                     type="file"
                                     label="Attach File"
                                     name="courtOrderFileAttachment"
-                                    multiple
+                                    // multiple
                                     onChange={(e) =>
-                                        setCourtOrderFileAttachment(e.target.files)
+                                        setCourtOrderFileAttachment(e.target.files[0])
                                     }
                                 />
+                            </Grid>
+                            <Grid>
+                                <Button onClick={downloadPdf} disabled = {!courtOrderFileAttachment}>
+                                        Download Already present pdf
+                                    </Button>
                             </Grid>
                         </Grid>
                         <Box

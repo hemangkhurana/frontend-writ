@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import ChipInput from 'material-ui-chip-input';
+// import ChipInput from 'material-ui-chip-input';
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useWrit } from "./WritContext";
 
@@ -161,7 +161,7 @@ export default function FirstStep({ onNext }) {
                         onChange={(e) => setWritRespondentNames(e.target.value)}
                     />
                 </Grid> */}
-                {/* <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         select
@@ -178,8 +178,8 @@ export default function FirstStep({ onNext }) {
                         <option value="Hemang">Hemang</option>
                         <option value="Deepanshu">Deepanshu</option>
                     </TextField>
-                </Grid> */}
-                <Grid item xs={12} sm={6}>
+                </Grid>
+                {/* <Grid item xs={12} sm={6}>
                     <ChipInput
                         fullWidth
                         label="Respondent Names"
@@ -193,7 +193,7 @@ export default function FirstStep({ onNext }) {
                         blurBehavior="clear"
                         required
                     />
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={6}>
                     <TextField
@@ -290,11 +290,11 @@ export default function FirstStep({ onNext }) {
                         </Button>
                     )}
                 </Grid>
-                    <Grid> 
-                        <Button onClick={downloadPdf} disabled = {!writFileAttachment}>
-                            Download Already present pdf
-                        </Button>
-                    </Grid>
+                <Grid> 
+                    <Button onClick={downloadPdf} disabled = {!writFileAttachment}>
+                        Download Already present pdf
+                    </Button>
+                </Grid>
             </Grid>
 
             <Box
