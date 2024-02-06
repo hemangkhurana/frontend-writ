@@ -104,7 +104,7 @@ const FourthStep = React.memo(
                     if (!data){
                         continue;
                     }
-                    if (data['writNumber'] == '' || data['counterDate'] == ''){
+                    if (data['writNumber'] == '' || data['courtOrderDate'] == ''){
                         alert("Please fill all required fields")
                         return;
                     }
