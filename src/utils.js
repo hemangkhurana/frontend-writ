@@ -4,7 +4,7 @@ export const getBaseUrl = () => {
   // } else if (process.env.NODE_ENV === "development") {
   //   return "http://localhost:8000/";
   // }
-  return "http://104.154.45.164:8000"
+  return "http://104.154.45.164:8000/"
 };
 export const firebaseConfig = {
   apiKey: "AIzaSyBcEBRIr1tmY_ZxuRgNN6cA1rLuhpr-KiA",
