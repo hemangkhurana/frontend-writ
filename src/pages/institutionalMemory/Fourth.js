@@ -148,6 +148,7 @@ const FourthStep = React.memo(
                         console.error('Error sending data:', error);
                     }
                 }
+                alert('Writ Data has been uploaded successfully');
             }
             
           };
