@@ -9,11 +9,13 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
+    console.log("hereeeeeeeeeeeeeeeeeeeee");
     try {
       const response = await fetch(getBaseUrl() + "user/login", {
         method: "POST",
@@ -30,6 +32,7 @@ export const Login = () => {
         localStorage.setItem("username", username);
         navigate("/user");
       } else {
+        alert(data.error);
         setLoginError(data.error);
       }
     } catch (error) {
