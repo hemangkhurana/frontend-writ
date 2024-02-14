@@ -6,7 +6,6 @@ import Paper from '@mui/material/Paper';
 import StepForm from './StepForm';
 import { WritProvider } from "./WritContext";
 import { headerNavbarWrapper } from "../../components/MainPage/headerNavbarWrapper";
-
 const AddWP = () => {
     const theme = createTheme()
     return (

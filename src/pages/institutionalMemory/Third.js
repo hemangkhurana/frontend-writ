@@ -25,14 +25,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CollectionsOutlined } from "@mui/icons-material";
+import { CollectionsOutlined, SellOutlined } from "@mui/icons-material";
 
 
 const ThirdStep = React.memo(
     ({onPrev, onNext}) => {
         const [formInstances, setFormInstances] = useState([]);
         const [enabledAccordionId, setEnabledAccordionId] = useState(0);
-        const { writNumber, counterFileAttachment, setCounterFileAttachment, } = useWrit("");
+        const { 
+            writNumber, counterFileAttachment, setCounterFileAttachment, 
+            loading, setLoading,
+        } = useWrit("");
 
         useEffect(() => {
             const fetchData = async () => {
@@ -60,6 +63,9 @@ const ThirdStep = React.memo(
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
+                finally{
+                    setLoading(false);
+                }
             };
             fetchData();
         }, []);
@@ -72,7 +78,7 @@ const ThirdStep = React.memo(
         const handleUpdateForm = async (postData) => {
             console.log(postData);
             setEnabledAccordionId(-1);
-            
+            setLoading(true);
             if (!postData){
                 console.log("op bhai");
                 const formData = new FormData();
@@ -93,10 +99,12 @@ const ThirdStep = React.memo(
                         console.log('Data sent successfully');
                     } else {
                         // If the response is not successful, throw an error
+                        setLoading(false);
                         throw new Error('Network response was not ok');
                     }
                 } catch (error) {
                     // Handle any errors that occurred during the fetch
+                    setLoading(false);
                     console.error('Error sending data:', error);
                 }
             }
@@ -104,10 +112,12 @@ const ThirdStep = React.memo(
             else{
                 for (const data of postData){
                     if (!data){
+                        setLoading(false);
                         continue;
                     }
                     if (data['writNumber'] == '' || data['counterDate'] == ''){
-                        alert("Please fill all required fields")
+                        alert("Please fill all required fields");
+                        setLoading(false);
                         return;
                     }
                 }
@@ -139,24 +149,25 @@ const ThirdStep = React.memo(
                 
                         // Check if the HTTP request was successful (status code in the range 200-299)
                         if (response.ok) {
-                        // If the response is successful, log a success message
-                        console.log('Data sent successfully');
+                            // If the response is successful, log a success message
+                            console.log('Data sent successfully');
                         } else {
-                        // If the response is not successful, throw an error
-                        throw new Error('Network response was not ok');
+                            // If the response is not successful, throw an error
+                            setLoading(false);
+                            throw new Error('Network response was not ok');
                         }
                     } catch (error) {
                         // Handle any errors that occurred during the fetch
+                        setLoading(false);
                         console.error('Error sending data:', error);
                     }
                 }
                 alert('Writ Data has been uploaded successfully');
             }
+            setLoading(false);
             
           };
           
-
-
         
         console.log("enabledAccordionId", enabledAccordionId);
 

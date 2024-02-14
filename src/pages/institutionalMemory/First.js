@@ -35,14 +35,15 @@ export default function FirstStep({ onNext }) {
         writDepartment, setWritDepartment,
 
         isAddNew, setIsAddNew,
-        
+        loading, setLoading,
     } = useWrit();
 
-    // useEffect(() => {
-    //     console.log('writDate updated in first.js:', writDate);
-    // }, [writDate]);
+    
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
 
 
@@ -120,9 +121,9 @@ export default function FirstStep({ onNext }) {
 
     return (
         <>
-            <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+            {/* <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
                 <CircularProgress color="inherit" />
-            </Backdrop>
+            </Backdrop> */}
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField

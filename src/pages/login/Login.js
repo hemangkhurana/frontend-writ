@@ -15,7 +15,7 @@ export const Login = () => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("password", password);
-    console.log("hereeeeeeeeeeeeeeeeeeeee");
+    // console.log("hereeeeeeeeeeeeeeeeeeeee");
     try {
       const response = await fetch(getBaseUrl() + "user/login", {
         method: "POST",
@@ -26,7 +26,7 @@ export const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       if (data.success) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", username);

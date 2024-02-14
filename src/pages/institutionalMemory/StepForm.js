@@ -13,6 +13,8 @@ import FifthStep from "./Fifth";
 import SixthStep from "./Sixth";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import { useWrit } from "./WritContext";
+
 
 // Step titles
 const labels = [
@@ -25,18 +27,25 @@ const labels = [
 ];
 
 export default function StepForm() {
+    const {
+        loading, setLoading,
+    } = useWrit();
+    
     const [step, setStep] = useState(0);
     const [writ, setWrit] = useState(0);
     const nextStep = () => {
         setStep(step + 1);
+        setLoading(true);
     };
 
     const prevStep = () => {
         setStep(step - 1);
+        setLoading(true);
     };
 
     const handleStepClick = (index) => {
         setStep(index);
+        setLoading(true);
     };
 
     const handleSteps = (step) => {

@@ -53,12 +53,6 @@ export const WritProvider = ({ children }) => {
 
     const [isAddNew, setIsAddNew] = useState(false);
 
-    useEffect(() => {
-        console.log('writDate updated in context:', writDate);
-    }, [writDate]);
-
-
-
     const handleDownloadFileAttachment = (fileAttachment, fileName) => {
         console.log(1);
         try {

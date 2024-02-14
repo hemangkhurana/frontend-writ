@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { getBaseUrl } from "../../utils";
 import Box from "@mui/material/Box";
@@ -26,10 +26,17 @@ export default function SecondStep({ onPrev, onNext }) {
         remarkFileAttachment,
         setRemarkFileAttachment,
         handleDownloadRemarkFileAttachment,
+        loading, setLoading,
+
     } = useWrit();
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             if (writNumber == '' || remarkDate == ''){
                 alert("Please fill all required fields")
@@ -60,6 +67,9 @@ export default function SecondStep({ onPrev, onNext }) {
               }
             } catch (error) {
               console.error('Error during the POST request: addwrit 1st', error);
+            }
+            finally {
+                setLoading(false);
             }
     };
 

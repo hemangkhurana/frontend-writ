@@ -20,6 +20,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { ConstructionOutlined } from "@mui/icons-material";
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
+import { useNavigate } from "react-router-dom";
 
 
 const WP = () => {
@@ -34,6 +35,7 @@ const WP = () => {
 
     //     // Add more demo entries as needed
     // ];
+    const navigate = useNavigate();
     const {
         writNumber, setWritNumber,
 
@@ -147,6 +149,7 @@ const WP = () => {
     
 
     const handleSearch = async () => {
+        setLoading(true);
         try{
             const postData =  {searchText, filterWritRespondentNames, filterWritPriority, filterWritDepartment, filterProject, filterSurveyNumber, filterRevenueVillage, filterStartDate, filterEndDate};
             // for (const key in postData){
@@ -176,6 +179,8 @@ const WP = () => {
         }
         catch (error){
             console.log("Error in applying filters! ", error);
+        } finally{
+            setLoading(false);
         }
     };
 
@@ -214,6 +219,7 @@ const WP = () => {
 
     const handleUpdateButton = async (writNumber) => {
         // Add your logic for adding new entries
+        setLoading(true);
         try {
             const postData = {writNumber};
             const response = await fetch(getBaseUrl() + "writ/getWrit", {
@@ -226,20 +232,25 @@ const WP = () => {
             });
             const responseData = await response.json();
             setSearchApplied(true);
+            console.log("There");
             if (responseData.success){
+                console.log("here");
                 handleAddNew();
                 setIsAddNew(false);
-                // console.log(responseData.data);
                 for (const key in responseData.data) {
                     fxn(key, responseData.data[key]);
                     // console.log(key,responseData.data[key])
                 }
+                // nagivate to add-wp
+                navigate("/user/add-wp");
             } 
             else {
+                setLoading(false);
                 console.error("Error in response from backend in getWrit", responseData.error);
             }
         }
         catch (error) {
+            setLoading(false);
             console.error("Error during the POST request Wp.js getwrit:", error);
         }
     };
@@ -263,6 +274,7 @@ const WP = () => {
 
 
     const handleDelete = async (writNumber) => {
+        setLoading(true);
         try {
             const postData = {writNumber};
             const response = await fetch(getBaseUrl() + "writ/deleteWrit", {
@@ -283,6 +295,8 @@ const WP = () => {
             }
         } catch (error) {
             console.error("Error during Delete entry in Wp.js : ", error);
+        } finally{
+            setLoading(false);
         }
     }
 
@@ -352,12 +366,13 @@ const WP = () => {
                 return 'key not found in database';
         }
     }
+
     
     return (
         <>
-            <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+            {/* <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
                 <CircularProgress color="inherit" />
-            </Backdrop>
+            </Backdrop> */}
             <div className={styles.headerDiv}>
                 <div className={styles.filterBtnDiv}>
                     <Button
@@ -426,6 +441,43 @@ const WP = () => {
                 <Table className={styles.tableBody}>
                     <TableHead>
                         <TableRow>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Writ Number</TableCell>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Priority</TableCell>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Petitioner Name</TableCell>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Respondent Name</TableCell>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Last Modified</TableCell>
+                            <TableCell style={{ fontSize: "1.2rem", textAlign: "center" }}>Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredData.map((row) => (
+                            <TableRow key={row.id} className={styles.tableDataRow}>
+                                <TableCell style={{ textAlign: "center" }}>{row.column1}</TableCell>
+                                <TableCell style={{ textAlign: "center" }}>{row.column2}</TableCell>
+                                <TableCell style={{ textAlign: "center" }}>{row.column3}</TableCell>
+                                <TableCell style={{ textAlign: "center" }}>{row.column4}</TableCell>
+                                <TableCell style={{ textAlign: "center" }}>{row.column5}</TableCell>
+                                <TableCell style={{ display: "flex", justifyContent: "space-around"  }}>
+                                    <Button variant="contained"  onClick={() => handleUpdateButton(row.column1)}>
+                                        {/* <Link to="add-wp" style={{ textDecoration: "none", color: "white" }}> */}
+                                            Update
+                                        {/* </Link> */}
+                                    </Button>
+                                    <Button variant="contained" color="error" onClick={() => handleDeleteButton(row.column1)}>
+                                        Delete
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+
+            {/* <TableContainer className={styles.tableContainer} component={Paper}>
+                <Table className={styles.tableBody}>
+                    <TableHead>
+                        <TableRow>
                             <TableCell style={{ fontSize:"1.2rem", }}>Writ Number</TableCell>
                             <TableCell style={{ fontSize:"1.2rem", }}>Priority</TableCell>
                             <TableCell style={{ fontSize:"1.2rem", }}>Petitioner Name</TableCell>
@@ -470,7 +522,7 @@ const WP = () => {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>
+            </TableContainer> */}
 
             <Dialog open={deleteConfirmationOpen} onClose={handleDeleteConfirmationClose}>
                 <DialogContent>

@@ -31,7 +31,10 @@ const FourthStep = React.memo(
     ({onPrev, onNext}) => {
         const [formInstances, setFormInstances] = useState([]);
         const [enabledAccordionId, setEnabledAccordionId] = useState(0);
-        const { writNumber, courtOrderFileAttachment, setCourtOrderFileAttachment, } = useWrit("");
+        const { 
+            writNumber, courtOrderFileAttachment, setCourtOrderFileAttachment, 
+            loading, setLoading,
+        } = useWrit("");
 
         useEffect(() => {
             const fetchData = async () => {
@@ -58,6 +61,9 @@ const FourthStep = React.memo(
                     }
                 } catch (error) {
                     console.error("Error fetching data:", error);
+                }
+                finally {
+                    setLoading(false);
                 }
             };
             fetchData();

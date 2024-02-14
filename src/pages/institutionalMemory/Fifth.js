@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { getBaseUrl } from "../../utils";
 import Box from "@mui/material/Box";
@@ -22,10 +22,15 @@ export default function FifthStep({ onPrev, onNext }) {
         contemptFileAttachment,
         setContemptFileAttachment,
         handleDownloadContemptFileAttachment,
+        loading, setLoading,
     } = useWrit();
 
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             if (writNumber =='' || contemptDate == ''){
                 alert("Please fill all required fields");
@@ -56,6 +61,9 @@ export default function FifthStep({ onPrev, onNext }) {
               }
             } catch (error) {
               console.error('Error during the POST request: addwrit 1st', error);
+            }
+            finally{
+                setLoading(false);
             }
     };
 

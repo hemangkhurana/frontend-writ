@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState, useContext, useEffect } from "react";
 import { useWrit } from "./WritContext";
 import { Grid, FormControlLabel, Checkbox, Button, Box, TextField, } from "@mui/material";
 import { getBaseUrl } from "../../utils";
@@ -8,9 +8,15 @@ export default function SixthStep({onPrev}) {
     const { writNumber,
             writClose, setWritClose,
             writCloseDate, setWritCloseDate,
+            loading, setLoading,
             } = useWrit();
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
     
     const handleSubmit = async() => {
+        setLoading(true);
         try {
             if (writCloseDate == '' || writClose == false){
                 alert("Please fill all required fields")
@@ -39,7 +45,9 @@ export default function SixthStep({onPrev}) {
         } catch (error) {
             console.log('Error sending data', error);
         }
-        console.log("Hemang");
+        finally{
+            setLoading(false);
+        }
     }
 
     return (

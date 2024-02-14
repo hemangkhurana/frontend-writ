@@ -18,7 +18,7 @@ function App() {
             <WritProvider>
                 <Routes>
                     <Route path="/user/" element={<WP/>} />
-                    <Route path="user/add-wp" element={<AddWP />} />                  
+                    <Route path="user/add-wp" element={<AddWP />} />
                     <Route path="/" element={<Login />}/>
                     <Route path="/admin" element={<Create />}></Route>
                     <Route path="/login" element={<Login />} />
