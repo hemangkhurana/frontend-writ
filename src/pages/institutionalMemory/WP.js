@@ -18,6 +18,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { ConstructionOutlined } from "@mui/icons-material";
+import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
+
 
 const WP = () => {
     // const demoData = [
@@ -74,6 +77,7 @@ const WP = () => {
 
         writClose, setWritClose,
         writCloseDate, setWritCloseDate,
+        loading, setLoading,
 
         isAddNew, setIsAddNew,
     } = useWrit();
@@ -86,6 +90,7 @@ const WP = () => {
     };
 
     const fetchLatestWritData = async () => {
+        setLoading(true);
         try {
             const response = await fetch(getBaseUrl() + "writ/getLatestWrit", {
                 method: "GET",
@@ -105,7 +110,10 @@ const WP = () => {
             
         } catch (error) {
             console.error("Error fetching data:", error);
+        }finally {
+            setLoading(false);
         }
+
     };
 
     const clearFilters = async () => {
@@ -134,7 +142,7 @@ const WP = () => {
     },[]);
 
     useEffect(() => {
-        console.log("New isAddNew value : ", isAddNew);
+        // console.log("New isAddNew value : ", isAddNew);
     },[isAddNew]);
     
 
@@ -220,7 +228,8 @@ const WP = () => {
             setSearchApplied(true);
             if (responseData.success){
                 handleAddNew();
-                console.log(responseData.data);
+                setIsAddNew(false);
+                // console.log(responseData.data);
                 for (const key in responseData.data) {
                     fxn(key, responseData.data[key]);
                     // console.log(key,responseData.data[key])
@@ -346,6 +355,9 @@ const WP = () => {
     
     return (
         <>
+            <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <div className={styles.headerDiv}>
                 <div className={styles.filterBtnDiv}>
                     <Button

@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 // import ChipInput from 'material-ui-chip-input';
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useWrit } from "./WritContext";
+import CircularProgress from '@mui/material/CircularProgress';
+import styles from "./WP.module.css";
+import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
 
 export default function FirstStep({ onNext }) {
     const {
@@ -35,13 +38,16 @@ export default function FirstStep({ onNext }) {
         
     } = useWrit();
 
-    useEffect(() => {
-        console.log('writDate updated in first.js:', writDate);
-    }, [writDate]);
+    // useEffect(() => {
+    //     console.log('writDate updated in first.js:', writDate);
+    // }, [writDate]);
+
+    const [loading, setLoading] = useState(false);
 
 
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
             if (writNumber=='' || writDate == '' || writPetitionerName == '' || writRespondentNames==[]){
                 alert("Please fill all required fields")
@@ -79,6 +85,8 @@ export default function FirstStep({ onNext }) {
           }
         } catch (error) {
           console.error('Error during the POST request: addwrit 1st', error);
+        } finally {
+            setLoading(false);
         }
       };
       
@@ -112,6 +120,9 @@ export default function FirstStep({ onNext }) {
 
     return (
         <>
+            <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                     <TextField

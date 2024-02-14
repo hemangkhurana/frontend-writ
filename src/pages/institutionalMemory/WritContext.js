@@ -49,6 +49,8 @@ export const WritProvider = ({ children }) => {
     const [writClose, setWritClose] = useState(false);
     const [writCloseDate, setWritCloseDate] = useState("");
 
+    const [loading, setLoading] = useState(false);
+
     const [isAddNew, setIsAddNew] = useState(false);
 
     useEffect(() => {
@@ -162,6 +164,7 @@ export const WritProvider = ({ children }) => {
         counterFileAttachment, setCounterFileAttachment,
         courtOrderFileAttachment, setCourtOrderFileAttachment,
         isAddNew, setIsAddNew,
+        loading, setLoading,
 
         handleDownloadWritFileAttachment,
         handleDownloadRemarkFileAttachment,
