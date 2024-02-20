@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { getBaseUrl } from "../../utils";
 import Box from "@mui/material/Box";
@@ -22,11 +22,20 @@ export default function FifthStep({ onPrev, onNext }) {
         contemptFileAttachment,
         setContemptFileAttachment,
         handleDownloadContemptFileAttachment,
+        loading, setLoading,
     } = useWrit();
 
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
+            if (writNumber =='' || contemptDate == ''){
+                alert("Please fill all required fields");
+                return;
+            }
             const formData = new FormData();
             formData.append('work', 'fifth');
             formData.append('writNumber', writNumber);
@@ -44,12 +53,17 @@ export default function FifthStep({ onPrev, onNext }) {
               });
               const responseData = await response.json();
               if (responseData.success) {
+                alert('Writ Data has been uploaded successfully');
                 console.log('Writ added successfully');
               } else {
+                alert('Some error has occured');
                 console.error('Failed to add writ: problem in backend', responseData.error);
               }
             } catch (error) {
               console.error('Error during the POST request: addwrit 1st', error);
+            }
+            finally{
+                setLoading(false);
             }
     };
 
@@ -66,6 +80,7 @@ export default function FifthStep({ onPrev, onNext }) {
                 body: JSON.stringify({ writNumber, contemptFileAttachment }),
             });
             if (!response.ok) {
+                alert('Unable to download pdf, some error has occured');
                 throw new Error('Failed to download file');
               }
               const blob = await response.blob();
@@ -95,7 +110,8 @@ export default function FifthStep({ onPrev, onNext }) {
                         placeholder="Write Writ Number"
                         value={writNumber}
                         onChange={(e) => setWritNumber(e.target.value)}
-                        required={writNumber.required}
+                        disabled
+                        required
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -109,7 +125,7 @@ export default function FifthStep({ onPrev, onNext }) {
                         type="date"
                         defaultValue={contemptDate}
                         onChange={(e) => setContemptDate(e.target.value)}
-                        required={contemptDate.required}
+                        required
                     />
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -122,7 +138,6 @@ export default function FifthStep({ onPrev, onNext }) {
                         type="text"
                         value={contemptText}
                         onChange={(e) => setContemptText(e.target.value)}
-                        required={contemptText.required}
                         multiline
                         rows={3}
                     />
@@ -137,7 +152,6 @@ export default function FifthStep({ onPrev, onNext }) {
                         type="contemptDcComments"
                         value={contemptDcComments}
                         onChange={(e) => setContemptDcComments(e.target.value)}
-                        required={contemptDcComments.required}
                         multiline
                         rows={2}
                     />

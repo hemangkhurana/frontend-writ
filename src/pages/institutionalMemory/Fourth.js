@@ -31,7 +31,10 @@ const FourthStep = React.memo(
     ({onPrev, onNext}) => {
         const [formInstances, setFormInstances] = useState([]);
         const [enabledAccordionId, setEnabledAccordionId] = useState(0);
-        const { writNumber, courtOrderFileAttachment, setCourtOrderFileAttachment, } = useWrit("");
+        const { 
+            writNumber, courtOrderFileAttachment, setCourtOrderFileAttachment, 
+            loading, setLoading,
+        } = useWrit("");
 
         useEffect(() => {
             const fetchData = async () => {
@@ -58,6 +61,9 @@ const FourthStep = React.memo(
                     }
                 } catch (error) {
                     console.error("Error fetching data:", error);
+                }
+                finally {
+                    setLoading(false);
                 }
             };
             fetchData();
@@ -100,14 +106,30 @@ const FourthStep = React.memo(
                 }
             }
             else{
+                for (const data of postData){
+                    if (!data){
+                        continue;
+                    }
+                    if (data['writNumber'] == '' || data['courtOrderDate'] == ''){
+                        alert("Please fill all required fields")
+                        return;
+                    }
+                }
+
                 let flag = 1;
                 for (const data of postData) {
+                    if (!data){
+                        continue;
+                    }
                     const formData = new FormData();
                     Object.entries(data).forEach(([key, value]) => {
                         formData.append(key, value);
                     });
                     formData.append('writNumber', writNumber);
                     formData.append('flag', flag);
+                    if (flag==1){
+                        formData.append('courtOrderFileAttachment', courtOrderFileAttachment);
+                    }
                     flag = 0;
                 
                     try {
@@ -132,6 +154,7 @@ const FourthStep = React.memo(
                         console.error('Error sending data:', error);
                     }
                 }
+                alert('Writ Data has been uploaded successfully');
             }
             
           };
@@ -176,6 +199,35 @@ const FourthStep = React.memo(
         const handleUpdateOkConfirmation = () => {
             handleUpdateConfirmationClose();
         }
+
+        const downloadPdf = async () => {
+            try {
+                console.log(courtOrderFileAttachment);
+                const response = await fetch(getBaseUrl() + 'writ/downloadPdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify({ writNumber, courtOrderFileAttachment }),
+                });
+                if (!response.ok) {
+                    alert('Unable to download pdf, some error has occured')
+                    throw new Error('Failed to download file');
+                  }
+                  const blob = await response.blob();
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'file.pdf';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+    
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        };
             
 
         return (
@@ -225,6 +277,7 @@ const FourthStep = React.memo(
                                                                                     value={
                                                                                         writNumber
                                                                                     }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -249,6 +302,7 @@ const FourthStep = React.memo(
                                                                                     //     enabledAccordionId !==
                                                                                     //     index
                                                                                     // }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -377,11 +431,16 @@ const FourthStep = React.memo(
                                     type="file"
                                     label="Attach File"
                                     name="courtOrderFileAttachment"
-                                    multiple
+                                    // multiple
                                     onChange={(e) =>
-                                        setCourtOrderFileAttachment(e.target.files)
+                                        setCourtOrderFileAttachment(e.target.files[0])
                                     }
                                 />
+                            </Grid>
+                            <Grid>
+                                <Button onClick={downloadPdf} disabled = {!courtOrderFileAttachment}>
+                                        Download Already present pdf
+                                    </Button>
                             </Grid>
                         </Grid>
                         <Box

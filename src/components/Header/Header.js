@@ -26,13 +26,13 @@ export const Header = () => {
   return (
     <>
     <AppBar position="static">
-      <Toolbar sx={{height: '8vh'}}>
+      <Toolbar className={styles.toolbar}>
         <IconButton size="large" edge="start" color="inherit" onClick={changeToggleMenu}>
           {toggleMenu ? <CloseIcon/> : <MenuIcon/> }
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <img src="/Logo.svg" alt="" style={{ width: 30, filter: "invert(100%)", marginRight: -10 }} />
-          <img src="/Logo-1.png" alt="" style={{ height: '150px', mixBlendMode: "color-dodge" }} />
+          <img src="/Logo.svg" alt="Logo Img Not Found" className={styles.logoImg}/>
+          <img src="/Logo-1.png" alt="Logo 1 Img not found" className={styles.logo1Img}/>
         </Typography>
         <IconButton size="large" edge="end" color="inherit">
           <FaUserCircle size={30} color="white" />
@@ -40,7 +40,7 @@ export const Header = () => {
         <Typography variant="h6" sx={{ fontSize: 20, color: "white", marginLeft: 2 }}>
           {localStorage.getItem("username")}
         </Typography>
-        <IconButton size="large" edge="end" color="inherit">
+        <IconButton className={styles.logoutButton} size="large" edge="end" color="inherit">
           <LogoutIcon/>
         </IconButton>
       </Toolbar>

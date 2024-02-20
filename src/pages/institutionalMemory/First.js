@@ -4,8 +4,12 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+// import ChipInput from 'material-ui-chip-input';
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { useWrit } from "./WritContext";
+import CircularProgress from '@mui/material/CircularProgress';
+import styles from "./WP.module.css";
+import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
 
 export default function FirstStep({ onNext }) {
     const {
@@ -29,17 +33,27 @@ export default function FirstStep({ onNext }) {
         setWritFileAttachment,
         handleDownloadWritFileAttachment,
         writDepartment, setWritDepartment,
-        
+
+        isAddNew, setIsAddNew,
+        loading, setLoading,
     } = useWrit();
 
+    
     useEffect(() => {
-        console.log('writDate updated in first.js:', writDate);
-    }, [writDate]);
+        setLoading(false);
+    }, []);
+
+    // const [loading, setLoading] = useState(false);
 
 
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
+            if (writNumber=='' || writDate == '' || writPetitionerName == '' || writRespondentNames==[]){
+                alert("Please fill all required fields")
+                return;
+            }
           const formData = new FormData();
           formData.append('work', 'first');
           formData.append('writNumber', writNumber);
@@ -52,6 +66,7 @@ export default function FirstStep({ onNext }) {
           formData.append('writPriority', writPriority);
           formData.append('writFileAttachment', writFileAttachment);
           formData.append('writDepartment', writDepartment);
+          formData.append('isAddNew', isAddNew);
             
           const response = await fetch(getBaseUrl() + 'writ/addNewWrit', {
             method: 'POST',
@@ -62,12 +77,17 @@ export default function FirstStep({ onNext }) {
           });
           const responseData = await response.json();
           if (responseData.success) {
+            alert('Writ Data has been uploaded successfully');
             console.log('Writ added successfully');
-          } else {
-            console.error('Failed to add writ: problem in backend', responseData.error);
+          } 
+          else {
+            alert('Some error has occured: '+ responseData.error);
+            console.error('Failed to add writ: ', responseData.error);
           }
         } catch (error) {
           console.error('Error during the POST request: addwrit 1st', error);
+        } finally {
+            setLoading(false);
         }
       };
       
@@ -82,6 +102,7 @@ export default function FirstStep({ onNext }) {
                 body: JSON.stringify({ writNumber, writFileAttachment }),
             });
             if (!response.ok) {
+                alert('Unable to download pdf, some error has occured')
                 throw new Error('Failed to download file');
               }
               const blob = await response.blob();
@@ -100,8 +121,11 @@ export default function FirstStep({ onNext }) {
 
     return (
         <>
+            {/* <Backdrop sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }} open={loading}>
+                <CircularProgress color="inherit" />
+            </Backdrop> */}
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item sm={6}>
                     <TextField
                         fullWidth
                         label="Writ Number"
@@ -109,6 +133,7 @@ export default function FirstStep({ onNext }) {
                         placeholder="Write Writ Number"
                         value={writNumber}
                         onChange={(e) => setWritNumber(e.target.value)}
+                        required
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -123,6 +148,7 @@ export default function FirstStep({ onNext }) {
                         placeholder="Date of Writ"
                         value={writDate}
                         onChange={(e) => setWritDate(e.target.value)}
+                        required
                     />
                 </Grid>
 
@@ -134,18 +160,9 @@ export default function FirstStep({ onNext }) {
                         placeholder="Write Petitioner Name"
                         value={writPetitionerName}
                         onChange={(e) => setWritPetitionerName(e.target.value)}
+                        required
                     />
                 </Grid>
-                {/* <Grid item xs={12} sm={6}>
-                    <TextField
-                        fullWidth
-                        label="Respondent Names"
-                        name="writRespondentNames"
-                        placeholder="Respondent Name"
-                        value={writRespondentNames}
-                        onChange={(e) => setWritRespondentNames(e.target.value)}
-                    />
-                </Grid> */}
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
@@ -157,12 +174,29 @@ export default function FirstStep({ onNext }) {
                         name="writRespondentNames"
                         value={writRespondentNames}
                         onChange={(e) => setWritRespondentNames(e.target.value)}
+                        required
                     >
                         <option value=""> </option>
                         <option value="Hemang">Hemang</option>
                         <option value="Deepanshu">Deepanshu</option>
                     </TextField>
                 </Grid>
+                {/* <Grid item xs={12} sm={6}>
+                    <ChipInput
+                        fullWidth
+                        label="Respondent Names"
+                        value={writRespondentNames}
+                        onAdd={(chip) => setWritRespondentNames([...writRespondentNames, chip])}
+                        onDelete={(chip, index) => {
+                            const newRespondentNames = [...writRespondentNames];
+                            newRespondentNames.splice(index, 1);
+                            setWritRespondentNames(newRespondentNames);
+                        }}
+                        blurBehavior="clear"
+                        required
+                    />
+                </Grid> */}
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
@@ -238,8 +272,8 @@ export default function FirstStep({ onNext }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6} mt={4}></Grid>
-                <Grid item xs={12} sm={6} mt={4}>
+                <Grid item xs={0} sm={6}></Grid>
+                <Grid item xs={12} sm={6}>
                     <input
                         accept="application/pdf"
                         type="file"
@@ -258,11 +292,11 @@ export default function FirstStep({ onNext }) {
                         </Button>
                     )}
                 </Grid>
-                    <Grid> 
-                        <Button onClick={downloadPdf} disabled = {!writFileAttachment}>
-                            Download Already present pdf
-                        </Button>
-                    </Grid>
+                <Grid> 
+                    <Button onClick={downloadPdf} disabled = {!writFileAttachment}>
+                        Download Already present pdf
+                    </Button>
+                </Grid>
             </Grid>
 
             <Box

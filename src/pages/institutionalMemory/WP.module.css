@@ -1,6 +1,6 @@
 .headerDiv {
     display : flex;
-    margin: 10px 0;
+    margin: 10px 100px;
 }
 
 .filterBtn {
@@ -19,7 +19,7 @@
 .addBtnDiv {
     display: flex;
     position: absolute;
-    right: 20px;
+    right: 100px;
 }
 
 .tableContainer {
@@ -35,4 +35,11 @@
 
 .tableDataRow {
     height: 10px;
+}
+
+.loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Adjust the height as needed */
 }

@@ -3,10 +3,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 const WritContext = createContext();
 
 export const WritProvider = ({ children }) => {
-    const [writNumber, setWritNumber] = useState('21');
+    const [writNumber, setWritNumber] = useState('');
     const [writDate, setWritDate] = useState('');
     const [writPetitionerName, setWritPetitionerName] = useState('');
-    const [writRespondentNames, setWritRespondentNames] = useState('');
+    const [writRespondentNames, setWritRespondentNames] = useState([]);
     const [writPetitionerPrayer, setWritPetitionerPrayer] = useState('');
     const [writCourtOrder, setWritCourtOrder] = useState('');
     const [writDcComments, setWritDcComments] = useState('');
@@ -49,11 +49,9 @@ export const WritProvider = ({ children }) => {
     const [writClose, setWritClose] = useState(false);
     const [writCloseDate, setWritCloseDate] = useState("");
 
-    useEffect(() => {
-        console.log('writDate updated in context:', writDate);
-    }, [writDate]);
+    const [loading, setLoading] = useState(false);
 
-
+    const [isAddNew, setIsAddNew] = useState(false);
 
     const handleDownloadFileAttachment = (fileAttachment, fileName) => {
         console.log(1);
@@ -159,6 +157,8 @@ export const WritProvider = ({ children }) => {
 
         counterFileAttachment, setCounterFileAttachment,
         courtOrderFileAttachment, setCourtOrderFileAttachment,
+        isAddNew, setIsAddNew,
+        loading, setLoading,
 
         handleDownloadWritFileAttachment,
         handleDownloadRemarkFileAttachment,

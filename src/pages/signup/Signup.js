@@ -89,7 +89,9 @@ export const Signup = () => {
           <div className={`row ${styles.signupFormDiv}`}>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="first_name">
-                <Form.Label>First Name</Form.Label>
+                <Form.Label>
+                  First Name<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="text"
                   value={first_name}
@@ -100,7 +102,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="last_name">
-                <Form.Label>Last Name</Form.Label>
+                <Form.Label>
+                  Last Name<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="text"
                   value={last_name}
@@ -111,7 +115,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="username">
-                <Form.Label>Username</Form.Label>
+                <Form.Label>
+                  Username<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="text"
                   value={username}
@@ -122,7 +128,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="password">
-                <Form.Label>Password</Form.Label>
+                <Form.Label>
+                  Password<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="password"
                   value={password}
@@ -133,7 +141,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="batch">
-                <Form.Label>Batch Year</Form.Label>
+                <Form.Label>
+                  Batch Year<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="number"
                   value={batch}
@@ -144,7 +154,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="mobileNumber">
-                <Form.Label>Mobile Number</Form.Label>
+                <Form.Label>
+                  Mobile Number<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="tel"
                   value={mobile}
@@ -155,7 +167,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="dob">
-                <Form.Label>Date Of Birth</Form.Label>
+                <Form.Label>
+                  Date Of Birth<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="date"
                   value={dob}
@@ -166,7 +180,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="email">
-                <Form.Label>Email</Form.Label>
+                <Form.Label>
+                  Email<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Control
                   type="email"
                   value={email}
@@ -177,7 +193,9 @@ export const Signup = () => {
             </div>
             <div className="col-sm-6">
               <Form.Group style={{ marginTop: "10px" }} controlId="district">
-                <Form.Label>District</Form.Label>
+                <Form.Label>
+                  District<span style={{ color: "red" }}>*</span>
+                 </Form.Label>
                 <Form.Select
                   type="text"
                   value={district}

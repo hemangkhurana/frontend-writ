@@ -9,12 +9,9 @@ export const headerNavbarWrapper = (componentToRender) => (props) => {
   return (
     <div>
       <Header />
-      {/* <div className={`row ${styles.div2}`}>
-        <Navbar /> */}
         <div className={`col ${styles.contentDiv}`}>
             {componentToRender(props)}
         </div>
-      {/* </div> */}
     </div>
   );
 };

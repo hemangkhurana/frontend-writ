@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState, useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import { getBaseUrl } from "../../utils";
 import Box from "@mui/material/Box";
@@ -26,11 +26,22 @@ export default function SecondStep({ onPrev, onNext }) {
         remarkFileAttachment,
         setRemarkFileAttachment,
         handleDownloadRemarkFileAttachment,
+        loading, setLoading,
+
     } = useWrit();
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
 
 
     const handleSubmit = async () => {
+        setLoading(true);
         try {
+            if (writNumber == '' || remarkDate == ''){
+                alert("Please fill all required fields")
+                return;
+            }
             const formData = new FormData();
             formData.append('work', 'second');
             formData.append('writNumber', writNumber);
@@ -48,12 +59,17 @@ export default function SecondStep({ onPrev, onNext }) {
               });
               const responseData = await response.json();
               if (responseData.success) {
+                alert('Writ Data has been uploaded successfully');
                 console.log('Writ added successfully');
               } else {
+                alert('Some error has occured');
                 console.error('Failed to add writ: problem in backend', responseData.error);
               }
             } catch (error) {
               console.error('Error during the POST request: addwrit 1st', error);
+            }
+            finally {
+                setLoading(false);
             }
     };
 
@@ -70,6 +86,7 @@ export default function SecondStep({ onPrev, onNext }) {
                 body: JSON.stringify({ writNumber, remarkFileAttachment }),
             });
             if (!response.ok) {
+                alert('Unable to download pdf, some error has occured')
                 throw new Error('Failed to download file');
               }
               const blob = await response.blob();
@@ -89,7 +106,7 @@ export default function SecondStep({ onPrev, onNext }) {
     return (
         <>
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
+                <Grid item sm={6}>
                     <TextField
                         fullWidth
                         label="Writ Number"
@@ -97,6 +114,8 @@ export default function SecondStep({ onPrev, onNext }) {
                         placeholder="Write Writ Number"
                         value={writNumber}
                         onChange={(e) => setWritNumber(e.target.value)}
+                        disabled
+                        required
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -110,6 +129,7 @@ export default function SecondStep({ onPrev, onNext }) {
                         type="date"
                         defaultValue={remarkDate}
                         onChange={(e) => setRemarkDate(e.target.value)}
+                        required
                     />
                 </Grid>
 
@@ -142,7 +162,7 @@ export default function SecondStep({ onPrev, onNext }) {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}></Grid>
+                <Grid item xs={0} sm={6}></Grid>
                 <Grid item xs={12} sm={6}>
                     <input
                         accept="application/pdf"
@@ -153,18 +173,18 @@ export default function SecondStep({ onPrev, onNext }) {
                             setRemarkFileAttachment(e.target.files[0])
                         }
                     />
-                    {remarkFileAttachment && (
+                    {/* {remarkFileAttachment && (
                         <Button
                             variant="text"
                             onClick={handleDownloadRemarkFileAttachment}
                         >
                             {remarkFileAttachment.name}
                         </Button>
-                    )}
+                    )} */}
                 </Grid>
                 <Grid>
                     <Button onClick={downloadPdf} disabled = {!remarkFileAttachment}>
-                            Download Already present pdf
+                            Download Already present pdf : {remarkFileAttachment.name}
                         </Button>
                 </Grid>
             </Grid>

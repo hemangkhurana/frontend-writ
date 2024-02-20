@@ -25,14 +25,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { CollectionsOutlined } from "@mui/icons-material";
+import { CollectionsOutlined, SellOutlined } from "@mui/icons-material";
 
 
 const ThirdStep = React.memo(
     ({onPrev, onNext}) => {
         const [formInstances, setFormInstances] = useState([]);
         const [enabledAccordionId, setEnabledAccordionId] = useState(0);
-        const { writNumber, counterFileAttachment, setCounterFileAttachment, } = useWrit("");
+        const { 
+            writNumber, counterFileAttachment, setCounterFileAttachment, 
+            loading, setLoading,
+        } = useWrit("");
 
         useEffect(() => {
             const fetchData = async () => {
@@ -60,6 +63,9 @@ const ThirdStep = React.memo(
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
+                finally{
+                    setLoading(false);
+                }
             };
             fetchData();
         }, []);
@@ -72,7 +78,7 @@ const ThirdStep = React.memo(
         const handleUpdateForm = async (postData) => {
             console.log(postData);
             setEnabledAccordionId(-1);
-            
+            setLoading(true);
             if (!postData){
                 console.log("op bhai");
                 const formData = new FormData();
@@ -86,29 +92,50 @@ const ThirdStep = React.memo(
                         },
                         body: formData,
                     });
-            
+                    
                     // Check if the HTTP request was successful (status code in the range 200-299)
                     if (response.ok) {
-                    // If the response is successful, log a success message
-                    console.log('Data sent successfully');
-                } else {
-                    // If the response is not successful, throw an error
-                    throw new Error('Network response was not ok');
-                }
-            } catch (error) {
-                // Handle any errors that occurred during the fetch
+                        // If the response is successful, log a success message
+                        console.log('Data sent successfully');
+                    } else {
+                        // If the response is not successful, throw an error
+                        setLoading(false);
+                        throw new Error('Network response was not ok');
+                    }
+                } catch (error) {
+                    // Handle any errors that occurred during the fetch
+                    setLoading(false);
                     console.error('Error sending data:', error);
                 }
             }
+
             else{
+                for (const data of postData){
+                    if (!data){
+                        setLoading(false);
+                        continue;
+                    }
+                    if (data['writNumber'] == '' || data['counterDate'] == ''){
+                        alert("Please fill all required fields");
+                        setLoading(false);
+                        return;
+                    }
+                }
+
                 let flag = 1;
                 for (const data of postData) {
+                    if (!data){
+                        continue;
+                    }
                     const formData = new FormData();
                     Object.entries(data).forEach(([key, value]) => {
                         formData.append(key, value);
                     });
                     formData.append('writNumber', writNumber);
                     formData.append('flag', flag);
+                    if (flag==1){
+                        formData.append('counterFileAttachment', counterFileAttachment);
+                    }
                     flag = 0;
                 
                     try {
@@ -122,23 +149,25 @@ const ThirdStep = React.memo(
                 
                         // Check if the HTTP request was successful (status code in the range 200-299)
                         if (response.ok) {
-                        // If the response is successful, log a success message
-                        console.log('Data sent successfully');
+                            // If the response is successful, log a success message
+                            console.log('Data sent successfully');
                         } else {
-                        // If the response is not successful, throw an error
-                        throw new Error('Network response was not ok');
+                            // If the response is not successful, throw an error
+                            setLoading(false);
+                            throw new Error('Network response was not ok');
                         }
                     } catch (error) {
                         // Handle any errors that occurred during the fetch
+                        setLoading(false);
                         console.error('Error sending data:', error);
                     }
                 }
+                alert('Writ Data has been uploaded successfully');
             }
+            setLoading(false);
             
           };
           
-
-
         
         console.log("enabledAccordionId", enabledAccordionId);
 
@@ -179,6 +208,34 @@ const ThirdStep = React.memo(
         const handleUpdateOkConfirmation = () => {
             handleUpdateConfirmationClose();
         }
+
+        const downloadPdf = async () => {
+            try {
+                const response = await fetch(getBaseUrl() + 'writ/downloadPdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    body: JSON.stringify({ writNumber, counterFileAttachment }),
+                });
+                if (!response.ok) {
+                    alert('Unable to download pdf, some error has occured')
+                    throw new Error('Failed to download file');
+                  }
+                  const blob = await response.blob();
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'file.pdf';
+                  document.body.appendChild(a);
+                  a.click();
+                  a.remove();
+    
+            } catch (error) {
+                console.error('Error downloading file:', error);
+            }
+        };
             
 
         return (
@@ -228,6 +285,7 @@ const ThirdStep = React.memo(
                                                                                     value={
                                                                                         writNumber
                                                                                     }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -252,6 +310,7 @@ const ThirdStep = React.memo(
                                                                                     //     enabledAccordionId !==
                                                                                     //     index
                                                                                     // }
+                                                                                    required
                                                                                 />
                                                                             )}
                                                                         />
@@ -396,13 +455,20 @@ const ThirdStep = React.memo(
                                     type="file"
                                     label="Attach File"
                                     name="counterFileAttachment"
-                                    multiple
+                                    // multiple
                                     onChange={(e) =>
-                                        setCounterFileAttachment(e.target.files)
+                                        setCounterFileAttachment(e.target.files[0])
                                     }
                                 />
                             </Grid>
+                            <Grid>
+                                <Button onClick={downloadPdf} disabled = {!counterFileAttachment}>
+                                        Download Already present pdf
+                                    </Button>
+                            </Grid>
+                            
                         </Grid>
+
                     <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
                         <Button onClick={onPrev} sx={{ mr: 1 }}>
                             <NavigateBeforeIcon fontSize="large" />

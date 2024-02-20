@@ -4,8 +4,51 @@
     background-color: #333;
     transition: left 0.3s ease; 
     z-index: 1000;
-}
-  
+}  
+
 .nav.active {
 left: 0;
+}
+
+.toolbar {
+    height: 70px;
+}
+
+.logoImg {
+    width: 30px;
+    filter: invert(100%);
+    margin: 0 10px;
+}
+
+.logo1Img {
+    height: 50px;
+    margin: 5px 0 0 10px;
+    mix-blend-mode: color-dodge;
+}
+
+@media screen and (max-width: 600px){
+    .toolbar {
+        height: 50px;
+        margin: 0;
+    }
+
+    .logoImg {
+        width: 20px;
+        margin: 0;
+    }
+
+    .logo1Img {
+        height: 30px;
+        margin: 0 0 0 10px;
+    }
+
+    .logoutButton {
+        right: -10px;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .logoImg {
+        width: 0;
+    }
 }

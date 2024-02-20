@@ -42,6 +42,7 @@ const Filter = ({ open, onClose, selectedValue }) => {
         filterEndDate, setFilterEndDate,
         searchApplied, setSearchApplied,
         searchText, setSearchText, 
+        loading, setLoading,
 
 
     } = useWrit();
@@ -86,10 +87,12 @@ const Filter = ({ open, onClose, selectedValue }) => {
         setFilterRevenueVillage("");
         setFilterStartDate("");
         setFilterEndDate("");
-
+        
         setFiltersApplied(false);
         setSearchApplied(false);
         setSearchText("");
+        onClose();
+        setLoading(true);
 
         try{
             const response = await fetch(getBaseUrl() + "writ/getLatestWrit", {
@@ -110,16 +113,18 @@ const Filter = ({ open, onClose, selectedValue }) => {
         }
         catch (error){
             console.log("Error in removing filters! ", error);
+        } finally{
+            setLoading(false);
         }
-        onClose();
     };
     
     
     const handleApply = async () => {
+        onClose();
+        setLoading(true);
         try{
-            console.log("oppppppppppp")
             const postData =  {searchText, filterWritRespondentNames, filterWritPriority, filterStatus, filterWritDepartment, filterProject, filterStartDate, filterEndDate};
-            console.log(postData)
+            // console.log(postData)
             const response = await fetch(getBaseUrl() + "writ/filterWrit", {
                 method: "POST",
                 headers: {
@@ -132,7 +137,6 @@ const Filter = ({ open, onClose, selectedValue }) => {
             if (responseData.success) {
                 setFiltersApplied(true);
                 const updatedData = responseData.data.map((item) => item);
-                console.log(updatedData);
                 setFilteredData(updatedData);
             } 
             else {
@@ -141,10 +145,12 @@ const Filter = ({ open, onClose, selectedValue }) => {
         }
         catch (error){
             console.log("Error in applying filters! ", error);
+        }  finally{
+            setLoading(false);
         }
+        
 
         // Close the modal
-        onClose();
     };
 
     return (
