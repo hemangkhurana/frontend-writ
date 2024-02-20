@@ -22,12 +22,11 @@ export const Navbar = () => {
   ];
   return (
     <nav className={styles.navbarContainer}>
-      {/* <nav style={{ margin: "0px", width: "100%", padding: "0px", }}> */}
       {links.map((item, index) => {
         return (
           <NavLink
             to={"/user/" + item.route}
-            style={{ margin: "20px 0px", padding: "0px" }}
+            style={{ padding: "20px 0px" }}
             className={({ isActive, isPending }) =>
               isActive ? "nav-link" : "nav-link-inactive"
             }
