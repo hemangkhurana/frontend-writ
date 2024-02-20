@@ -41,7 +41,7 @@ export const Header = () => {
           {localStorage.getItem("username")}
         </Typography>
         <IconButton className={styles.logoutButton} size="large" edge="end" color="inherit">
-          <LogoutIcon/>
+          <LogoutIcon onClick={logout}/>
         </IconButton>
       </Toolbar>
     </AppBar>
