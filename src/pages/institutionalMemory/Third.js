@@ -12,7 +12,7 @@ import {
     AccordionSummary,
     AccordionDetails,
 } from "@mui/material";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";

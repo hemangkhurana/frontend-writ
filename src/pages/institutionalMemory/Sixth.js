@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useContext, useEffect } from "react";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 import { Grid, FormControlLabel, Checkbox, Button, Box, TextField, } from "@mui/material";
 import { getBaseUrl } from "../../utils";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";

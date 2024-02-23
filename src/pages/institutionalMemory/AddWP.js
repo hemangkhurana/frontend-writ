@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import StepForm from './StepForm';
-import { WritProvider } from "./WritContext";
+import { WritProvider } from "./context/WritContext";
 import { headerNavbarWrapper } from "../../components/MainPage/headerNavbarWrapper";
 const AddWP = () => {
     const theme = createTheme()

@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 // import ChipInput from 'material-ui-chip-input';
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 import CircularProgress from '@mui/material/CircularProgress';
 import styles from "./WP.module.css";
 import Backdrop from "@mui/material/Backdrop"; // Import Backdrop

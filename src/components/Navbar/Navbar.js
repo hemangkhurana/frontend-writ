@@ -14,7 +14,7 @@ import {
 import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css"
 import SendIcon from '@mui/icons-material/Send';
-import { useWrit } from "../../pages/institutionalMemory/WritContext";
+import { useWrit } from "../../pages/institutionalMemory/context/WritContext";
 import CircularProgress from '@mui/material/CircularProgress';
 import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
 

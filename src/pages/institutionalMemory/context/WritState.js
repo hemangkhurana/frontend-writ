@@ -1,8 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, {useState} from 'react';
 
-const WritContext = createContext();
-
-export const WritProvider = ({ children }) => {
+export const useWritState = () => {
     const [writNumber, setWritNumber] = useState('');
     const [writDate, setWritDate] = useState('');
     const [writPetitionerName, setWritPetitionerName] = useState('');
@@ -88,9 +86,7 @@ export const WritProvider = ({ children }) => {
         handleDownloadFileAttachment(contemptFileAttachment, "contemptFileAttachment");
     };
 
-    
-
-    const state = {
+    return {
         writNumber,
         setWritNumber,
 
@@ -164,12 +160,4 @@ export const WritProvider = ({ children }) => {
         handleDownloadRemarkFileAttachment,
         handleDownloadContemptFileAttachment,
     };
-
-    return (
-        <WritContext.Provider value={state}>{children}</WritContext.Provider>
-    );
-};
-
-export const useWrit = () => {
-    return useContext(WritContext);
 };

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 
 export default function SecondStep({ onPrev, onNext }) {
     // const [writNumber, setWritNumber] = useState([]);

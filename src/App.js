@@ -10,7 +10,7 @@ import { Create } from "./pages/admin/Create";
 import MainPage from "./components/MainPage/MainPage";
 import WP from "./pages/institutionalMemory/WP";
 import AddWP from "./pages/institutionalMemory/AddWP";
-import { WritProvider } from "./pages/institutionalMemory/WritContext.js";
+import { WritProvider } from "./pages/institutionalMemory/context/WritContext.js";
 
 function App() {
     return (

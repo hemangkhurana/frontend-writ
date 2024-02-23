@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 
 export default function FifthStep({ onPrev, onNext }) {
     //   const [writNumber, setWritNumber] = useState([]);

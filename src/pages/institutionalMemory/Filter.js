@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 import { getBaseUrl } from "../../utils";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 const Filter = ({ open, onClose, selectedValue }) => {
 
     const {

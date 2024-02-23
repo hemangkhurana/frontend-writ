@@ -13,7 +13,7 @@ import FifthStep from "./Fifth";
 import SixthStep from "./Sixth";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import { useWrit } from "./WritContext";
+import { useWrit } from "./context/WritContext";
 
 
 // Step titles

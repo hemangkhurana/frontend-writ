@@ -5,11 +5,11 @@ import {Container, TextField, Button, Table, TableContainer, TableHead, TableRow
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import AddIcon from "@mui/icons-material/Add";
+import ClearIcon from '@mui/icons-material/Clear';
 import styles from "./WP.module.css";
 import { Link } from "react-router-dom";
 import Filter from "./Filter";
-import { useWrit } from "./WritContext";
-import ClearIcon from '@mui/icons-material/Clear';
+import { useWrit } from "./context/WritContext";
 import  { useMemo } from 'react';
 import { faXing } from "@fortawesome/free-brands-svg-icons";
 
@@ -382,7 +382,7 @@ const WP = () => {
                         startIcon={<FilterListIcon />}
                     >
                         Filter
-                   </Button>
+                    </Button>
                     <Filter
                         open={isFilterModalOpen}
                         onClose={() => setFilterModalOpen(false)}
@@ -396,8 +396,8 @@ const WP = () => {
                         className={styles.filterBtn}
                         variant="text"
                         disabled={!filtersApplied && !searchApplied}
-                        onClick={clearFilters} // Add your clearFilters function here
-                        startIcon={<ClearIcon />} // Optionally, you can add an icon for the Clear Filters button
+                        onClick={clearFilters} 
+                        startIcon={<ClearIcon />} 
                     >
                         Clear Filters
                     </Button>
