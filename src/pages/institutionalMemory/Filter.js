@@ -21,7 +21,7 @@ import {
 
 import { getBaseUrl } from "../../utils";
 import { useWrit } from "./context/WritContext";
-const Filter = ({ open, onClose, selectedValue }) => {
+const Filter = ({ open, onClose }) => {
 
     const {
         filteredData,
@@ -71,7 +71,7 @@ const Filter = ({ open, onClose, selectedValue }) => {
 
     
     const handleClose = () => {
-        onClose(selectedValue);
+        onClose();
     };
 
 

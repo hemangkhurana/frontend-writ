@@ -166,7 +166,7 @@ export default function FirstStep({ onNext }) {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
-                        select
+                        multiple
                         SelectProps={{
                             native: true,
                         }}

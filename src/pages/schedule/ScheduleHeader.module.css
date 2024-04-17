@@ -1,0 +1,21 @@
+.headerDiv {
+    display : flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 10px auto;
+}
+
+
+.searchField {
+    display : flex;
+    width: 500px;
+}
+
+.searchDiv {
+    display: flex;
+}
+
+.filterDiv {
+    display: flex;
+}
