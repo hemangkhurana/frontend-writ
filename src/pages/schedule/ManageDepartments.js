@@ -238,7 +238,7 @@ const ManageDepartments = () => {
                             fullWidth
                             value={editDepartmentName}
                             onChange={(e) => setEditDepartmentName(e.target.value)}
-                            sx={{ borderRadius: '12px 12px 0 0' }}
+                            sx={{ borderRadius: '12px 12px 0 0', mt:1 }}
                         />
                         <TextField
                             label="Department Description"
@@ -248,7 +248,7 @@ const ManageDepartments = () => {
                             onChange={(e) => setEditDepartmentDescription(e.target.value)}
                             sx={{
                                 borderRadius: '0 0 50px 50px',
-                                mt: -1
+                                mt:2
                             }}
                         />
                     </DialogContent>
@@ -263,7 +263,7 @@ const ManageDepartments = () => {
                 </Dialog>
 
                 <Dialog open={isDeleteDialogOpen} onClose={handleCancelEdit}>
-                    <DialogTitle>Are you sure to Delete Department?</DialogTitle>
+                    <DialogTitle>Confirm department deletion? "{newDepArr[deleteIndex]?.departmentName}"</DialogTitle>
                     <DialogActions>
                         <Button onClick={handleCancelDelete} color="primary">
                             Cancel
