@@ -30,7 +30,7 @@ export const Login = () => {
       if (data.success) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("username", username);
-        navigate("/user");
+        navigate("/user/wp");
       } else {
         alert(data.error);
         setLoginError(data.error);
