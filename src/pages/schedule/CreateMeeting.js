@@ -75,8 +75,7 @@ const CreateMeeting = ({ open, onClose}) => {
         }
 
         try{
-            console.log("Hemang");
-            const response = await fetch(getBaseUrl() + 'schedule/hemang', {
+            const response = await fetch(getBaseUrl() + 'schedule/create_new_meeting', {
                 method: 'POST',
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -87,7 +86,7 @@ const CreateMeeting = ({ open, onClose}) => {
             console.log(responseData);
         }
         catch (error){
-            console.log("Error in applying filters! ", error);
+            console.log("Error while creating meeting ", error);
         }
     };
 

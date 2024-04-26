@@ -212,7 +212,7 @@ const ManageDepartments = () => {
                     <Paper variant='outlined' style={{ padding: '10px', marginTop: '10px', position: 'relative' }}>
                         {/* Edit and Delete icons */}
                         <IconButton
-                            onClick={() => handleAEdit(index)}
+                            onClick={() => handleEdit(index)}
                             style={{ position: 'absolute', top: '5px', right: '30px'}}
                             
                         >
@@ -231,7 +231,27 @@ const ManageDepartments = () => {
                 ))}
                 <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
                     <DialogTitle>Edit Department</DialogTitle>
-                    c
+                    <DialogContent>
+                        <TextField
+                            label="Department Name"
+                            variant="outlined"
+                            fullWidth
+                            value={editDepartmentName}
+                            onChange={(e) => setEditDepartmentName(e.target.value)}
+                            sx={{ borderRadius: '12px 12px 0 0', mt:1 }}
+                        />
+                        <TextField
+                            label="Department Description"
+                            variant="outlined"
+                            fullWidth
+                            value={editDepartmentDescription}
+                            onChange={(e) => setEditDepartmentDescription(e.target.value)}
+                            sx={{
+                                borderRadius: '0 0 50px 50px',
+                                mt:2
+                            }}
+                        />
+                    </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancelEdit} color="primary">
                             Cancel
@@ -243,7 +263,7 @@ const ManageDepartments = () => {
                 </Dialog>
 
                 <Dialog open={isDeleteDialogOpen} onClose={handleCancelEdit}>
-                    <DialogTitle>Are you sure to Delete Department?</DialogTitle>
+                    <DialogTitle>Confirm department deletion? "{newDepArr[deleteIndex]?.departmentName}"</DialogTitle>
                     <DialogActions>
                         <Button onClick={handleCancelDelete} color="primary">
                             Cancel
@@ -259,7 +279,6 @@ const ManageDepartments = () => {
 };
 
 export default headerNavbarWrapper(ManageDepartments);
-
 
 
 
