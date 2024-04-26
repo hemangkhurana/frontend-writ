@@ -12,7 +12,6 @@ const ManageDepartments = () => {
     const [departmentId, setDepartmentId] = useState('');
     const [departmentName, setDepartmentName] = useState('');
     const [departmentDescription, setDepartmentDescription] = useState('');
-    const [departmentUsers, setDepartmentUsers] = useState('');
 
     const [editDepartmentId, setEditDepartmentId] = useState('');
     const [editDepartmentName, setEditDepartmentName] = useState('');
@@ -20,68 +19,42 @@ const ManageDepartments = () => {
     const [editIndex, setEditIndex] = useState();
 
     const {newDepArr, setNewDepArr} = useScheduleContext();
-    const [isDialogOpen, setDialogOpen] = useState(false);
+    const [isEditDialogOpen, seEditDialogOpen] = useState(false);
+    const [deleteIndex, setDeleteIndex] = useState();
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    getBaseUrl() + "schedule/get_departments",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization:
-                                "Bearer " + localStorage.getItem("token"),
-                        },
-                    }
-                );
-                const data = await response.json();
-                if (data.success) {
-                    console.log("fetchData", data.data);
-                } else {
-                    throw new Error("Network response was not ok.");
+    const fetchData = async () => {
+        try {
+            const response = await fetch(
+                getBaseUrl() + "schedule/get_departments",
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization:
+                            "Bearer " + localStorage.getItem("token"),
+                    },
                 }
-            } catch (error) {
-                console.error("Error fetching data:", error);
+            );
+            const data = await response.json();
+            if (data.success) {
+                setNewDepArr(data.data)
+                console.log("fetchData", data.data);
+            } else {
+                throw new Error("Network response was not ok.");
             }
-        };
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    useEffect(() => {
         fetchData();
     }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(
-                    getBaseUrl() + "schedule/get_all_departments",
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization:
-                                "Bearer " + localStorage.getItem("token"),
-                        },
-                    }
-                );
-                const data = await response.json();
-                if (data.success) {
-                    console.log("fetchData", data.data);
-                    setNewDepArr(data.data)
-                } else {
-                    throw new Error("Network response was not ok.");
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        fetchData();
-    }, []);
-
 
     const handleAddEntry = async () => {
         if (departmentName && departmentDescription) {
-            const formData = {'departmentName': departmentName, 'deartmentDescription': departmentDescription};
+            const formData = {'departmentName': departmentName, 'departmentDescription': departmentDescription};
             try {
                 const response = await fetch(getBaseUrl() + 'schedule/add_department', {
                     method: 'POST',
@@ -94,8 +67,8 @@ const ManageDepartments = () => {
                 const responseData = await response.json();
                 if(responseData.success)
                 {
+                    fetchData();
                     console.log('department created successfully')
-                    setNewDepArr([...newDepArr, { departmentName, departmentDescription }]);
                 }
                 else
                 {
@@ -112,39 +85,78 @@ const ManageDepartments = () => {
 
     const handleEdit = (index) => {
         setEditIndex(index);
-        setEditDepartmentId(newDepArr[index].departmentId);
+        setEditDepartmentId(newDepArr[index]._id);
         setEditDepartmentName(newDepArr[index].departmentName);
         setEditDepartmentDescription(newDepArr[index].departmentDescription);
-        setDialogOpen(true);
+        seEditDialogOpen(true);
     };
 
-    const handleSaveEdit = () => {
-        // complete this function
-        const temp = [...newDepArr];
-        temp[editIndex] = {
-            'departmentId' : editDepartmentId,
-            'departmentName' : editDepartmentName,
-            'departmentDescription' : editDepartmentDescription
+    
+    const handleSaveEdit = async () => {
+        const postData = {'_id': editDepartmentId, 'departmentName' : editDepartmentName, 'departmentDescription' : editDepartmentDescription,}
+        try {
+            const response = await fetch(getBaseUrl() + 'schedule/update_department', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+                body: JSON.stringify(postData),
+            });
+            const responseData = await response.json();
+            console.log(responseData.data)
+            if(responseData.success)
+            {
+                seEditDialogOpen(false);
+                setEditDepartmentId('');
+                setEditDepartmentName('');
+                setEditDepartmentDescription('');
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Error during deleting new department : " + error);
         }
-        setNewDepArr(temp);
-        console.log("Hemang", newDepArr[editIndex])
-        setDialogOpen(false);
-        setEditDepartmentId('');
-        setEditDepartmentName('');
-        setEditDepartmentDescription('');
     }
-
+    
     const handleCancelEdit = () => {
-        setDialogOpen(false);
+        seEditDialogOpen(false);
         setEditDepartmentId('');
         setEditDepartmentName('');
         setEditDepartmentDescription('');
     }
-
+    
     const handleDelete = (index) => {
-        const updatedDepArr = [...newDepArr];
-        updatedDepArr.splice(index, 1);
-        setNewDepArr(updatedDepArr);
+        setDeleteIndex(index)
+        setDeleteDialogOpen(true)
+    }
+
+    const handleCancelDelete = () => {
+        setDeleteDialogOpen(false);
+        setDeleteIndex();
+    }
+
+    const handleFinalDelete = async () => {
+        const postData = newDepArr[deleteIndex]._id
+        try {
+            const response = await fetch(getBaseUrl() + 'schedule/delete_department', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+                body: JSON.stringify(postData),
+            });
+            const responseData = await response.json();
+            console.log(responseData.message)
+            if(responseData.success)
+            {
+                setDeleteDialogOpen(false);
+                setDeleteIndex();
+                fetchData();
+            }
+        } catch (error) {
+            console.log("Error during deleting new department : " + error);
+        }
     };
 
     return (
@@ -217,7 +229,7 @@ const ManageDepartments = () => {
                         <p style={{ marginLeft: '20px' }}>{item.departmentDescription}</p>
                     </Paper>
                 ))}
-                <Dialog open={isDialogOpen} onClose={handleCancelEdit}>
+                <Dialog open={isEditDialogOpen} onClose={handleCancelEdit}>
                     <DialogTitle>Edit Department</DialogTitle>
                     <DialogContent>
                         <TextField
@@ -246,6 +258,18 @@ const ManageDepartments = () => {
                         </Button>
                         <Button onClick={handleSaveEdit} color="primary">
                             Save
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={isDeleteDialogOpen} onClose={handleCancelEdit}>
+                    <DialogTitle>Are you sure to Delete Department?</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleCancelDelete} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleFinalDelete} color="primary">
+                            Delete
                         </Button>
                     </DialogActions>
                 </Dialog>
