@@ -52,9 +52,30 @@ const ManageDepartments = () => {
     }, []);
 
 
-    const handleAddEntry = () => {
+    const handleAddEntry = async () => {
         if (departmentName && departmentDescription) {
-            setNewDepArr([...newDepArr, { departmentName, departmentDescription }]);
+            const formData = {'departmentName': departmentName, 'deartmentDescription': departmentDescription};
+            try {
+                const response = await fetch(getBaseUrl() + 'schedule/add_department', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    },
+                    body: "formData",
+                });
+                if(response.success)
+                {
+                    console.log('department created successfully')
+                    setNewDepArr([...newDepArr, { departmentName, departmentDescription }]);
+                }
+                else
+                {
+                    console.log('unsuccessful while creating department')
+                }
+            } catch (error) {
+                console.log("Error during creating new department");
+            }
 
             setDepartmentName('');
             setDepartmentDescription('');

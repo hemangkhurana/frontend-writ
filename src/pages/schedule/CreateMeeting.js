@@ -4,6 +4,7 @@ import { Grid, TextField, Button, Dialog, DialogContent, DialogActions, DialogTi
 import { useScheduleContext } from './context/ScheduleContext';
 import Select from "react-select";
 import moment from "moment";
+import { getBaseUrl } from '../../utils';
 
 const CreateMeeting = ({ open, onClose}) => {
 
@@ -61,10 +62,29 @@ const CreateMeeting = ({ open, onClose}) => {
         onClose();
     };
 
-    const handleApply = async () => {
+
+    const handleSubmit = async () => {
         onClose();
+        const postData = {
+            'meetingSubject': meetingSubject,
+            'scheduleDate': scheduledDate,
+            'scheduledLocation': scheduledLocation,
+            'scheduledStartTime': scheduledStartTime,
+            'scheduledEndTime': scheduledEndTime,
+            'selectedPriority': selectedPriority,
+        }
+
         try{
             console.log("Hemang");
+            const response = await fetch(getBaseUrl() + 'schedule/hemang', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+                body: JSON.stringify(postData),
+            });
+            const responseData = await response.json();
+            console.log(responseData);
         }
         catch (error){
             console.log("Error in applying filters! ", error);
@@ -150,7 +170,7 @@ const CreateMeeting = ({ open, onClose}) => {
                 <Button variant='contained' onClick={handleClose}>
                     Cancel
                 </Button>
-                <Button variant="contained" onClick={handleApply}>
+                <Button variant="contained" onClick={handleSubmit}>
                     Create Meeting
                 </Button>
             </DialogActions>
