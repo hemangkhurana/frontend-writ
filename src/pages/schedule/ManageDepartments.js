@@ -27,6 +27,33 @@ const ManageDepartments = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch(
+                    getBaseUrl() + "schedule/get_departments",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token"),
+                        },
+                    }
+                );
+                const data = await response.json();
+                if (data.success) {
+                    console.log("fetchData", data.data);
+                } else {
+                    throw new Error("Network response was not ok.");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
                     getBaseUrl() + "schedule/get_all_departments",
                     {
                         method: "GET",
@@ -62,9 +89,10 @@ const ManageDepartments = () => {
                         "Content-Type": "application/json",
                         Authorization: 'Bearer ' + localStorage.getItem('token'),
                     },
-                    body: "formData",
+                    body: JSON.stringify(formData),
                 });
-                if(response.success)
+                const responseData = await response.json();
+                if(responseData.success)
                 {
                     console.log('department created successfully')
                     setNewDepArr([...newDepArr, { departmentName, departmentDescription }]);
