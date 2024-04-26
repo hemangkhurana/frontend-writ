@@ -20,7 +20,8 @@ import Backdrop from "@mui/material/Backdrop"; // Import Backdrop
 
 export const Navbar = () => {
   const links = [
-    { name: 'Add Writ', route : "", icon: <FaClipboard size={40}/>}, 
+    { name: 'Writ', route : "wp", icon: <FaClipboard size={40}/>}, 
+    { name: 'Schedule', route : "schedule", icon: <FaCalendarAlt size={40}/>}, 
   ];
 
   const {

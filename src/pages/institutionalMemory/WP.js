@@ -386,10 +386,6 @@ const WP = () => {
                     <Filter
                         open={isFilterModalOpen}
                         onClose={() => setFilterModalOpen(false)}
-                        onApply={(filters) => {
-                            console.log("Applied Filters:", filters);
-                            // setFilterModalOpen(false);
-                        }}
                     />
 
                     <Button

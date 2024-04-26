@@ -76,7 +76,7 @@ export default function StepForm() {
     return (
         <>
             <Box sx={{ my: 3 }}>
-                <Link to="/user">
+                <Link to="/user/wp">
                     <Button
                         color="inherit"
                         aria-label="close"
