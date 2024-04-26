@@ -18,7 +18,7 @@ function App() {
         <BrowserRouter>
             <WritProvider>
                 <Routes>
-                <Route path="/user/" element={<WritRoutes />} />
+                    {/* <Route path="/user/" element={<WritRoutes />} /> */}
                     <Route path="/user/wp/*" element={<WritRoutes />} />
                     <Route path="/user/schedule/*" element={<ScheduleRoutes/>}/>
                     <Route path="/" element={<Login />}/>

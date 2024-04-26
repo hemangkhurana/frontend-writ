@@ -242,7 +242,7 @@ const WP = () => {
                     // console.log(key,responseData.data[key])
                 }
                 // nagivate to add-wp
-                navigate("/user/add-wp");
+                navigate("/user/wp/add-wp");
             } 
             else {
                 setLoading(false);
