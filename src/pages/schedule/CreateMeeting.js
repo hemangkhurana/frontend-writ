@@ -14,13 +14,19 @@ const CreateMeeting = ({ open, onClose}) => {
         priorities,
     } = useScheduleContext();
 
-    const [meetingSubject, setMeetingSubject] = useState('');
-    const [scheduledDate, setScheduledDate] = useState('');
-    const [scheduledLocation, setScheduledLocation] = useState('');
-    const [scheduledStartTime, setScheduledStartTime] = useState('');
-    const [scheduledEndTime, setScheduledEndTime] = useState('');
-    const [selectedGroup, setSelectedGroup] = useState(null);
-    const [selectedPriority, setSelectedPriority] = useState(null);
+    const {
+        meetingSubject, setMeetingSubject,
+        scheduledDate, setScheduledDate,
+        scheduledLocation, setScheduledLocation,
+        scheduledStartTime, setScheduledStartTime,
+        scheduledEndTime, setScheduledEndTime,
+        selectedGroups, setSelectedGroups,
+        selectedDepartments, setSelectedDepartments,
+        selectedUsers, setSelectedUsers,
+        selectedPriority, setSelectedPriority,
+        meetingMinutes, setMeetingMinutes,
+        meetingSummary, setMeetingSummary,
+    } = useScheduleContext();
 
 
     const handleCreateMeeting = () => {
@@ -36,18 +42,9 @@ const CreateMeeting = ({ open, onClose}) => {
         };
     
         setAllEvents([...allEvents, newMeeting]);
-
-        // Reset form fields after creating the meeting
-        setMeetingSubject('');
-        setScheduledDate('');
-        setScheduledLocation('');
-        setScheduledStartTime('');
-        setScheduledEndTime('');
-        setSelectedGroup(null);
-        setSelectedPriority(null);
     };
 
-    const handleCancelCreateMeeting = () => {
+    const clearMeetingFields = () => {
         // Reset form fields after creating the meeting
         setMeetingSubject('');
         setScheduledDate('');
@@ -60,6 +57,7 @@ const CreateMeeting = ({ open, onClose}) => {
 
     const handleClose = () => {
         onClose();
+        clearMeetingFields();
     };
 
 
@@ -84,6 +82,7 @@ const CreateMeeting = ({ open, onClose}) => {
             });
             const responseData = await response.json();
             console.log(responseData);
+            clearMeetingFields();
         }
         catch (error){
             console.log("Error while creating meeting ", error);

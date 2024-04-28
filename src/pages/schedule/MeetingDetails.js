@@ -46,10 +46,13 @@ const MeetingDetails = () => {
                       />
                   </div>
                     <p>
-                      <strong>Start Date:</strong> {meeting.start.toLocaleDateString()} {meeting.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <strong>Meeting Date:</strong> {meeting.start.toLocaleDateString()}
                     </p>
                     <p>
-                      <strong>End Date:</strong> {meeting.end.toLocaleDateString()} {meeting.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <strong>Start Time:</strong>{meeting.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                    <p>
+                      <strong>End Time:</strong>{meeting.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
 
                     <div style={{marginBottom:10, }}>

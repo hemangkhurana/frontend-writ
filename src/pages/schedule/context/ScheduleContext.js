@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useScheduleState } from "./ScheduleState";
-import { useTempState } from "./TempState";
 import { useMeetingDetailsState } from "./MeetingDetailsState";
 
 const ScheduleContext = createContext();
@@ -9,7 +8,6 @@ export const ScheduleContextProvider = ({ children }) => {
     
     const state = {
         ...useScheduleState(),
-        ...useTempState(),
         ...useMeetingDetailsState(),
     };
 
