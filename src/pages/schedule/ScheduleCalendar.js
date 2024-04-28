@@ -11,24 +11,15 @@ import { getBaseUrl } from "../../utils";
 const localizer = momentLocalizer(moment);
 
 const EventComponent = ({ event }) => {
-    const { activeMeetingIndex, setActiveMeetingIndex } = useScheduleContext();
+    const { activeMeetingId, setActiveMeetingId } = useScheduleContext();
     return (
-        <div onClick={() => setActiveMeetingIndex(event.id)}>{event.title}</div>
+        <div onClick={() => setActiveMeetingId(event._id)}>{event.title}</div>
     );
 };
 
 const MyCalendar = () => {
     const {
-        newEvent,
-        setNewEvent,
-        allEvents,
-        setAllEvents,
-        modalOpen,
-        setModalOpen,
-        selectedMeeting,
-        setSelectedMeeting,
-        activeMeetingIndex,
-        setActiveMeetingIndex,
+        allEvents, setAllEvents,
     } = useScheduleContext();
 
 

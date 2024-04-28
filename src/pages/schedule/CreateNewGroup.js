@@ -11,11 +11,6 @@ const CreateNewGroup = ({open, onClose}) => {
         onClose();
     }
 
-    const {
-        depArr, setDepArr,
-        optionsArray, setArray,
-    } = useScheduleContext();
-
     const [meetingGroupName, setMeetingGroupName] = useState();
     const [participants, setParticipants] = useState();
     const participantsList = [

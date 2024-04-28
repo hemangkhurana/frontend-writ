@@ -265,7 +265,6 @@ const ManageDepartments = () => {
                             label="Select Options"
                             multiple
                             onChange={handleOptionChange}
-                            components={animatedComponents}
                         >
                             {usersList.map((option) => (
                             <MenuItem key={option.value} value={option}>

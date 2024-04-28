@@ -9,12 +9,9 @@ import { getBaseUrl } from '../../utils';
 const CreateMeeting = ({ open, onClose}) => {
 
     const {
-        allEvents, setAllEvents,
-        meetingGroups, setMeetingGroups,
+        meetingGroups,
         priorities,
-    } = useScheduleContext();
-
-    const {
+        allEvents, setAllEvents,
         meetingSubject, setMeetingSubject,
         scheduledDate, setScheduledDate,
         scheduledLocation, setScheduledLocation,
@@ -36,7 +33,7 @@ const CreateMeeting = ({ open, onClose}) => {
             start: moment(scheduledDate + ' ' + scheduledStartTime, 'YYYY-MM-DD HH:mm').toDate(),
             end: moment(scheduledDate + ' ' + scheduledEndTime, 'YYYY-MM-DD HH:mm').toDate(),
             location: scheduledLocation,
-            groups: selectedGroup ? selectedGroup.map(group => group.label) : [],
+            groups: selectedGroups ? selectedGroups.map(group => group.label) : [],
             priority: selectedPriority ? selectedPriority.value : '',
             // Add other properties as needed
         };
@@ -51,7 +48,7 @@ const CreateMeeting = ({ open, onClose}) => {
         setScheduledLocation('');
         setScheduledStartTime('');
         setScheduledEndTime('');
-        setSelectedGroup(null);
+        setSelectedGroups(null);
         setSelectedPriority(null);
     }
 
@@ -62,7 +59,6 @@ const CreateMeeting = ({ open, onClose}) => {
 
 
     const handleSubmit = async () => {
-        onClose();
         const postData = {
             'meetingSubject': meetingSubject,
             'scheduleDate': scheduledDate,
@@ -82,6 +78,7 @@ const CreateMeeting = ({ open, onClose}) => {
             });
             const responseData = await response.json();
             console.log(responseData);
+            onClose();
             clearMeetingFields();
         }
         catch (error){
@@ -147,7 +144,7 @@ const CreateMeeting = ({ open, onClose}) => {
                             placeholder="Select Meeting Group"
                             closeMenuOnSelect={true}
                             options={meetingGroups}
-                            onChange={(selected) => setSelectedGroup(selected)}
+                            onChange={(selected) => setSelectedGroups(selected)}
                         />
                     </Grid>
                     <Grid item xs={12}>

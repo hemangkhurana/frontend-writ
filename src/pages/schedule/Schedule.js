@@ -11,49 +11,13 @@ import FabComponent from "./FabComponent.js";
 import MeetingDetails from "./MeetingDetails.js";
 
 const Schedule = () => {
-    const [newEvent, setNewEvent] = useState(0);
-    const [scheduleFirst, setScheduleFirst] = useState(1);
-    const [scheduledTime, setTime] = useState(
-        moment("10:00", "hh:mm").format("hh:mm")
-    );
-    const [total_pages, setTotal] = useState(0);
-    const [past_total_pages, setPastTotal] = useState(0);
-    const [page, setPage] = React.useState(1);
-    const [loading, setLoading] = useState(1);
-
     const {
-        meetingGroups,
-        setMeetingGroups,
-        actionType,
-        setType,
-        depArr,
-        setDepArr,
-        optionsArray,
-        setArray,
-        upcoming,
-        setUpcoming,
-        past,
-        setPast,
-        events,
-        setEvents,
         usersList, setUsersList,
+        allEvents, setAllEvents,
+        activeMeetingId,setActiveMeetingId,
     } = useScheduleContext();
 
-    const changeScheduledTime = (e) => {
-        setTime(e.target.value);
-    };
-
-    const changeScheduleFirst = (e) => {
-        // console.log(e.target.value);
-        setScheduleFirst(!scheduleFirst);
-    };
-
-    const UpdateUpcomingEventList = () => setNewEvent(newEvent + 1);
-    const addParticipants = (e) => {
-        console.log(e);
-    };
-
-    const [tempEvents, setTempEvents] = useState();
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,8 +36,53 @@ const Schedule = () => {
                 const data = await response.json();
                 if(data.success)
                 {
-                    console.log(data.data);
-                    setTempEvents(data.data);
+                    // console.log("Hemang" + data.data);
+                    // setTempEvents(data.data);
+                    console.log(...data.data);
+                    const formattedEvents = data.data.map(event => {
+                        const tempDate = event.date.split('T');
+                        const tempStart = event.startTime.split('T');
+                        const tempEnd = event.endTime.split('T');
+                        const dateParts = tempDate[0].split('-');
+                        const startTimeParts = tempStart[1].split(':');
+                        const endTimeParts = tempEnd[1].split(':');
+                        // console.log(...dateParts)
+                        // console.log(...startTimeParts)
+                        // console.log(...endTimeParts)
+                        const start = new Date(
+                                                dateParts[0],
+                                                dateParts[1]-1,
+                                                dateParts[2],
+                                                startTimeParts[0],
+                                                startTimeParts[1]
+                                            )
+                        // console.log("start"+ start)
+                        const end = new Date(
+                                                dateParts[0],
+                                                dateParts[1]-1,
+                                                dateParts[2],
+                                                endTimeParts[0],
+                                                endTimeParts[1]
+                                            )
+                        // console.log("end"+ end)
+                        // console.log("id" + event._id)
+                        return {
+                            _id: event._id,
+                            title : event.title,
+                            start : start,
+                            end : end,
+                            location : event.location,
+                            priority : event.priority,
+                            minutesOfMeeting : event.minutesOfMeeting,
+                            summary : event.summary
+                        };
+                    });
+                    // console.log('Formatted Events');
+                    // console.log(...formattedEvents);
+                    // console.log(typeof formattedEvents);
+                    setAllEvents(formattedEvents);
+                    // console.log(data.data[0]._id);
+                    setActiveMeetingId(data.data[0]._id);
                 }
                 else
                 {
@@ -125,8 +134,6 @@ const Schedule = () => {
         fetchData();
     }, []);
 
-
-
     return (
         <div className={styles.scheduleContainer}>
             <div className={styles.topContainer}>
@@ -136,7 +143,7 @@ const Schedule = () => {
                 <div className={`${styles.leftContainer} col-sm-8`}>
                     <div className={`${styles.calendarMainContainer} row`}>
                         <div className={styles.calendarDiv}>
-                            <ScheduleCalendar events={events} />
+                            <ScheduleCalendar events={allEvents} />
                         </div>
                     </div>
                 </div>
