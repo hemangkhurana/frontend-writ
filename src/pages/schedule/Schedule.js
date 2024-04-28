@@ -36,6 +36,7 @@ const Schedule = () => {
         setPast,
         events,
         setEvents,
+        usersList, setUsersList,
     } = useScheduleContext();
 
     const changeScheduledTime = (e) => {
@@ -53,6 +54,7 @@ const Schedule = () => {
     };
 
     const [tempEvents, setTempEvents] = useState();
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -83,6 +85,47 @@ const Schedule = () => {
         };
         fetchData();
     }, []);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    getBaseUrl() + "user/getAllUsers",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token"),
+                        },
+                    }
+                );
+                const data = await response.json();
+                if(data.success)
+                {
+                    console.log(data.data);
+                    const val = [];
+                    data.data.map((item) => {
+                        val.push({
+                            value: item.id,
+                            label: item.first_name + " " + item.last_name,
+                        });
+                    });
+                    setUsersList(val);
+                }
+                else
+                {
+                    console.log("Some problem in fetching users");
+                }
+            } catch (error) {
+                console.log("Error in fetching meetings", error);
+            }
+        };
+        fetchData();
+    }, []);
+
+
 
     return (
         <div className={styles.scheduleContainer}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Button, Grid, Paper, Container, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Button, Paper, Container, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Grid, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,15 +8,18 @@ import { useScheduleContext } from "./context/ScheduleContext";
 import { headerNavbarWrapper } from "../../components/MainPage/headerNavbarWrapper";
 import { getBaseUrl } from "../../utils";
 import { Link } from "react-router-dom";
+import { ContactPageSharp } from "@mui/icons-material";
 
 const ManageDepartments = () => {
     const [departmentId, setDepartmentId] = useState('');
     const [departmentName, setDepartmentName] = useState('');
     const [departmentDescription, setDepartmentDescription] = useState('');
+    const [departmentUsers, setDepartmentUsers] = useState([]);
 
     const [editDepartmentId, setEditDepartmentId] = useState('');
     const [editDepartmentName, setEditDepartmentName] = useState('');
     const [editDepartmentDescription, setEditDepartmentDescription] = useState('');
+    const [editDepartmentUsers, setEditDepartmentUsers] = useState([]);
     const [editIndex, setEditIndex] = useState();
 
     const {newDepArr, setNewDepArr} = useScheduleContext();
@@ -23,6 +27,48 @@ const ManageDepartments = () => {
     const [deleteIndex, setDeleteIndex] = useState();
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+   const {
+        usersList,setUsersList,
+        
+   } = useScheduleContext();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    getBaseUrl() + "user/getAllUsers",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization:
+                                "Bearer " + localStorage.getItem("token"),
+                        },
+                    }
+                );
+                const data = await response.json();
+                if(data.success)
+                {
+                    console.log(data.data);
+                    const val = [];
+                    data.data.map((item) => {
+                        val.push({
+                            value: item.id,
+                            label: item.first_name + " " + item.last_name,
+                        });
+                    });
+                    setUsersList(val);
+                }
+                else
+                {
+                    console.log("Some problem in fetching users");
+                }
+            } catch (error) {
+                console.log("Error in fetching meetings", error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const fetchData = async () => {
         try {
@@ -54,7 +100,12 @@ const ManageDepartments = () => {
 
     const handleAddEntry = async () => {
         if (departmentName && departmentDescription) {
-            const formData = {'departmentName': departmentName, 'departmentDescription': departmentDescription};
+            const formData = {
+                'departmentName': departmentName,
+                'departmentDescription': departmentDescription,
+                'departmentUsers' : departmentUsers
+            };
+            console.log(formData['departmentUsers']);
             try {
                 const response = await fetch(getBaseUrl() + 'schedule/add_department', {
                     method: 'POST',
@@ -80,6 +131,7 @@ const ManageDepartments = () => {
 
             setDepartmentName('');
             setDepartmentDescription('');
+            setDepartmentUsers([]);
         }
     };
 
@@ -88,6 +140,9 @@ const ManageDepartments = () => {
         setEditDepartmentId(newDepArr[index]._id);
         setEditDepartmentName(newDepArr[index].departmentName);
         setEditDepartmentDescription(newDepArr[index].departmentDescription);
+        setEditDepartmentUsers(newDepArr[index].departmentUsers);
+        // console.log(editDepartmentUsers);
+
         seEditDialogOpen(true);
     };
 
@@ -159,6 +214,10 @@ const ManageDepartments = () => {
         }
     };
 
+    const handleOptionChange = (event) => {
+        setDepartmentUsers(event.target.value);
+    };
+
     return (
         <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
             <Paper
@@ -198,6 +257,25 @@ const ManageDepartments = () => {
                             }}
                         />
                     </Grid>
+                    <Grid item xs={12}>
+                        <FormControl fullWidth>
+                        <InputLabel>Select Options</InputLabel>
+                        <Select
+                            value={departmentUsers}
+                            label="Select Options"
+                            multiple
+                            onChange={handleOptionChange}
+                            components={animatedComponents}
+                        >
+                            {usersList.map((option) => (
+                            <MenuItem key={option.value} value={option}>
+                                {option.label}
+                            </MenuItem>
+                            ))}
+                        </Select>
+                        </FormControl>
+                    </Grid>
+
                 </Grid>
                 <Button 
                     variant="contained" 
@@ -251,6 +329,26 @@ const ManageDepartments = () => {
                                 mt:2
                             }}
                         />
+
+                        {/* <FormControl fullWidth sx={{ mt: 2 }}>
+                            <InputLabel >Department Users</InputLabel>
+                            <Select
+                                multiple
+                                value={editDepartmentUsers} // Set selected users
+                                label="Department Users"
+                                onChange={(event) => setEditDepartmentUsers(event.target.value)}
+                                >
+                                {usersList.map((option) => {
+                                    const isSelected = editDepartmentUsers.some((user) => user.value === option.value);
+                                    return (
+                                    <MenuItem key={option.value} value={option} selected={isSelected}>
+                                        {option.label}
+                                    </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl> */}
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCancelEdit} color="primary">

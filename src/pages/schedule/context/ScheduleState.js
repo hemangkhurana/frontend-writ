@@ -10,7 +10,7 @@ export const useScheduleState = () => {
     const [upcoming, setUpcoming] = useState([]);
     const [past,setPast] = useState([]);
     const [events, setEvents] = useState([]);
-    const [usersList, setUsersList] = useState(['Hemang', 'Deepanshu', 'Rajat', 'Ankush'])
+    const [usersList, setUsersList] = useState([]);
     
     return {
         meetingGroups, setMeetingGroups,
