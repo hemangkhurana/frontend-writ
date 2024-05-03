@@ -102,3 +102,38 @@
     right: 10px;
     padding: 10px;
 }
+
+
+.meetingMinutes {
+    max-height: 80px; /* Adjust the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    /* Optional: Customize scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1); /* Change scrollbar color */
+}
+
+/* Optional: Customize scrollbar */
+.meetingMinutes::-webkit-scrollbar {
+    width: 8px; /* Adjust scrollbar width */
+}
+
+.meetingMinutes::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Change scrollbar thumb color */
+}
+
+.meetingSummary {
+    max-height: 80px; /* Adjust the maximum height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    /* Optional: Customize scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.1); /* Change scrollbar color */
+}
+
+/* Optional: Customize scrollbar */
+.meetingSummary::-webkit-scrollbar {
+    width: 8px; /* Adjust scrollbar width */
+}
+
+.meetingSummary::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5); /* Change scrollbar thumb color */
+}

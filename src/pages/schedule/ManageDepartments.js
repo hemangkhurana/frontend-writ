@@ -359,7 +359,7 @@ const ManageDepartments = () => {
                     </DialogActions>
                 </Dialog>
 
-                <Dialog open={isDeleteDialogOpen} onClose={handleCancelEdit}>
+                <Dialog open={isDeleteDialogOpen} onClose={handleCancelDelete}>
                     <DialogTitle>Confirm department deletion? "{newDepArr[deleteIndex]?.departmentName}"</DialogTitle>
                     <DialogActions>
                         <Button onClick={handleCancelDelete} color="primary">

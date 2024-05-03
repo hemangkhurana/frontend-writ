@@ -23,23 +23,8 @@ const CreateMeeting = ({ open, onClose}) => {
         selectedPriority, setSelectedPriority,
         meetingMinutes, setMeetingMinutes,
         meetingSummary, setMeetingSummary,
+        fetchMeetings,
     } = useScheduleContext();
-
-
-    const handleCreateMeeting = () => {
-        const newMeeting = {
-            id: allEvents.length + 1,
-            title: meetingSubject,
-            start: moment(scheduledDate + ' ' + scheduledStartTime, 'YYYY-MM-DD HH:mm').toDate(),
-            end: moment(scheduledDate + ' ' + scheduledEndTime, 'YYYY-MM-DD HH:mm').toDate(),
-            location: scheduledLocation,
-            groups: selectedGroups ? selectedGroups.map(group => group.label) : [],
-            priority: selectedPriority ? selectedPriority.value : '',
-            // Add other properties as needed
-        };
-    
-        setAllEvents([...allEvents, newMeeting]);
-    };
 
     const clearMeetingFields = () => {
         // Reset form fields after creating the meeting
@@ -80,6 +65,7 @@ const CreateMeeting = ({ open, onClose}) => {
             console.log(responseData);
             onClose();
             clearMeetingFields();
+            fetchMeetings();
         }
         catch (error){
             console.log("Error while creating meeting ", error);
@@ -98,6 +84,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             placeholder="Enter Meeting Subject"
                             value={meetingSubject}
                             onChange={(e) => setMeetingSubject(e.target.value)}
+                            // InputLabelProps={{
+                            //     shrink: true,
+                            // }}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -107,6 +96,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             type="date"
                             value={scheduledDate}
                             onChange={(e) => setScheduledDate(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -116,6 +108,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             placeholder="Enter Location"
                             value={scheduledLocation}
                             onChange={(e) => setScheduledLocation(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -125,6 +120,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             type="time"
                             value={scheduledStartTime}
                             onChange={(e) => setScheduledStartTime(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -134,6 +132,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             type="time"
                             value={scheduledEndTime}
                             onChange={(e) => setScheduledEndTime(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -145,6 +146,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             closeMenuOnSelect={true}
                             options={meetingGroups}
                             onChange={(selected) => setSelectedGroups(selected)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -157,6 +161,9 @@ const CreateMeeting = ({ open, onClose}) => {
                             options={priorities}
                             value={selectedPriority}
                             onChange={(selected) => setSelectedPriority(selected)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                 </Grid>

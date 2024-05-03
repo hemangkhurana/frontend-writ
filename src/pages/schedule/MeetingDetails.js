@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import { Container, Paper,Button, IconButton, Chip } from '@mui/material';
-import { useScheduleContext } from './context/ScheduleContext';
-import EditIcon from '@mui/icons-material/Edit';
-import EditMeeting from './EditMeeting';
+import React, { useEffect, useState } from "react";
+import { Container, Paper, Button, IconButton, Chip,  Dialog, DialogTitle, DialogContent, DialogActions, } from "@mui/material";
+import { useScheduleContext } from "./context/ScheduleContext";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { getBaseUrl } from '../../utils';
+import EditMeeting from "./EditMeeting";
+import styles from './Schedule.module.css';
 
 const MeetingDetails = () => {
     const {
         allEvents, setAllEvents,
         modalOpen, setModalOpen,
         selectedMeeting, setSelectedMeeting,
-        activeMeetingId,setActiveMeetingId,
+        activeMeetingId, setActiveMeetingId,
 
         mdMeetingSubject, setMdMeetingSubject,
         mdScheduledDate, setMdScheduledDate,
@@ -22,63 +25,148 @@ const MeetingDetails = () => {
         mdSelectedPriority, setMdSelectedPriority,
         mdMeetingMinutes, setMdMeetingMinutes,
         mdMeetingSummary, setMdMeetingSummary,
-        } = useScheduleContext()
+
+        fetchMeetings,
+
+        edMeetingSubject, setEdMeetingSubject,
+        edScheduledDate, setEdScheduledDate,
+        edScheduledLocation, setEdScheduledLocation,
+        edScheduledStartTime, setEdScheduledStartTime,
+        edScheduledEndTime, setEdScheduledEndTime,
+        edSelectedGroups, setEdSelectedGroups,
+        edSelectedDepartments, setEdSelectedDepartments,
+        edSelectedUsers, setEdSelectedUsers,
+        edSelectedPriority, setEdSelectedPriority,
+        edMeetingMinutes, setEdMeetingMinutes,
+        edMeetingSummary, setEdMeetingSummary,
+    } = useScheduleContext();
+
+    const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
-      if(activeMeetingId!==null) {
-        const activeObject = allEvents.find(obj => obj._id === activeMeetingId);
-        if(activeObject) {
-          setMdMeetingSubject(activeObject.title);
-          setMdScheduledDate(activeObject.start.toLocaleDateString());
-          setMdScheduledStartTime(activeObject.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-          setMdScheduledEndTime(activeObject.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-          setMdScheduledLocation(activeObject.location);
-          setMdSelectedPriority(activeObject.priority);
-          setMdMeetingMinutes(activeObject.minutesOfMeeting);
-          setMdMeetingSummary(activeObject.summary);
+        if (activeMeetingId !== null) {
+            const activeObject = allEvents.find(
+                (obj) => obj._id === activeMeetingId
+            );
+            if (activeObject) {
+                setMdMeetingSubject(activeObject.title);
+                const dateFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                setMdScheduledDate(activeObject.start.toLocaleDateString('en-US', dateFormatOptions));
+                setMdScheduledStartTime(
+                    activeObject.start.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })
+                );
+                setMdScheduledEndTime(
+                    activeObject.end.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })
+                );
+                setMdScheduledLocation(activeObject.location);
+                setMdSelectedPriority(activeObject.priority);
+                setMdMeetingMinutes(activeObject.minutesOfMeeting);
+                setMdMeetingSummary(activeObject.summary);
+
+                setEdMeetingSubject(activeObject.title);
+                setEdScheduledDate(activeObject.start.toISOString().split('T')[0]);
+                setEdScheduledStartTime(activeObject.start.toTimeString().slice(0, 5));
+                setEdScheduledEndTime(activeObject.end.toTimeString().slice(0, 5));
+                setEdScheduledLocation(activeObject.location);
+                setEdSelectedPriority(activeObject.priority);
+                setEdMeetingMinutes(activeObject.minutesOfMeeting);
+                setEdMeetingSummary(activeObject.summary);
+            }
         }
-      }
-    }, [activeMeetingId])
+    }, [activeMeetingId]);
 
     const handleButtonClick = (index) => {
         setActiveMeetingId(index);
-      };
-    
-    const [ isEditDetailsDialogOpen, setEditDetailsDialogOpen ] = useState(false);
-    const handleEditClick = () => {
-      setEditDetailsDialogOpen(true)
+    };
+
+    const handleDelete = () => {
+        setDeleteDialogOpen(true);
+        console.log("Delete Buton Clicked");
     }
+
+    const handleCancelDelete = () => {
+        setDeleteDialogOpen(false);
+    }
+
+    const handleFinalDelete = async () => {
+        const postData = {'_id' : activeMeetingId};
+        console.log(postData)
+        try {
+            const response = await fetch(getBaseUrl() + 'schedule/delete_meeting', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+                body: JSON.stringify(postData),
+            });
+            const responseData = await response.json();
+            if(responseData.success) {
+                fetchMeetings();
+                setDeleteDialogOpen(false);
+                console.log(responseData.message);
+            }
+            else {
+                console.log(responseData.message);
+            }
+        } catch (e) {
+            console.log("error occured while deleting Meeting : " + e)
+        }
+    }
+
+    const [isEditDetailsDialogOpen, setEditDetailsDialogOpen] = useState(false);
+    const handleEditClick = () => {
+        setEditDetailsDialogOpen(true);
+    };
     // console.log("Active" + activeMeetingId);
     // console.log(allEvents[0]._id)
 
-
     return (
-        <Container maxWidth='sm' sx={{ mb: 4 }}>
-          <h3>Meeting Details</h3>
-                <Paper
-                  variant='outlined'
-                  sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
-                  style={{ position: 'relative' }}
-                >
-                  <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h3>{mdMeetingSubject}</h3>
-                      <IconButton onClick={handleEditClick}>
-                        <EditIcon/>
-                      </IconButton>
-                      <EditMeeting
-                        open={isEditDetailsDialogOpen}
-                        onClose={() => setEditDetailsDialogOpen(false)}
-                      />
-                  </div>
+        <Container maxWidth="sm" sx={{ mb: 4 }}>
+            <h3>Meeting Details</h3>
+            <Paper
+                variant="outlined"
+                sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
+                style={{ position: "relative" }}
+            >
+                <div>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                        }}
+                    >
+                        <h3>{mdMeetingSubject}</h3>
+                        <div>
+                            <IconButton onClick={handleEditClick}>
+                                <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={handleDelete}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </div>
+                        <EditMeeting
+                            open={isEditDetailsDialogOpen}
+                            onClose={() => setEditDetailsDialogOpen(false)}
+                        />
+                    </div>
                     <p>
-                      <strong>Meeting Date:</strong> {mdScheduledDate}
+                        <strong>Meeting Date:</strong> {mdScheduledDate}
                     </p>
                     <p>
-                      <strong>Start Time:</strong>{mdScheduledStartTime}
+                        <strong>Start Time:</strong>
+                        {mdScheduledStartTime}
                     </p>
                     <p>
-                      <strong>End Time:</strong>{mdScheduledEndTime}
+                        <strong>End Time:</strong>
+                        {mdScheduledEndTime}
                     </p>
 
                     {/* <div style={{marginBottom:10, }}>
@@ -103,13 +191,24 @@ const MeetingDetails = () => {
                     </div> */}
 
                     <h4>Minutes of Meeting</h4>
-                    <p>{mdMeetingMinutes}</p>
+                    <p className={styles.meetingMinutes}>{mdMeetingMinutes}</p>
 
                     <h4>Summary</h4>
-                    <p>{mdMeetingSummary}</p>
-                  </div>
-                </Paper>
-      </Container>
+                    <p className={styles.meetingSummary}>{mdMeetingSummary}</p>
+                </div>
+                <Dialog open={isDeleteDialogOpen} onClose={handleCancelDelete}>
+                    <DialogTitle>Confirm meeting deletion? "{mdMeetingSubject}"</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={handleCancelDelete} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleFinalDelete} color="primary">
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Paper>
+        </Container>
     );
 };
 

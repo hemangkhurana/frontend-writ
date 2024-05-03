@@ -1,22 +1,63 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField, Select, MenuItem, InputLabel } from "@mui/material";
+import { useScheduleContext } from './context/ScheduleContext';
+import { getBaseUrl } from '../../utils';
 
 const EditMeeting = ({ open, onClose }) => {
-    const [meetingTitle, setMeetingTitle] = useState('');
-    const [meetingDate, setMeetingDate] = useState('');
-    const [meetingLocation, setMeetingLocation] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
-    const [departments, setDepartments] = useState([]);
-    const [selectedDepartment, setSelectedDepartment] = useState('');
-    const [groups, setGroups] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [minutesOfMeeting, setMinutesOfMeeting] = useState('');
-    const [summary, setSummary] = useState('');
 
-    const handleApply = () => {
+    const {
+        activeMeetingId, setActiveMeetingId,
+        fetchMeetings,
+
+        edMeetingSubject, setEdMeetingSubject,
+        edScheduledDate, setEdScheduledDate,
+        edScheduledLocation, setEdScheduledLocation,
+        edScheduledStartTime, setEdScheduledStartTime,
+        edScheduledEndTime, setEdScheduledEndTime,
+        edSelectedGroups, setEdSelectedGroups,
+        edSelectedDepartments, setEdSelectedDepartments,
+        edSelectedUsers, setEdSelectedUsers,
+        edSelectedPriority, setEdSelectedPriority,
+        edMeetingMinutes, setEdMeetingMinutes,
+        edMeetingSummary, setEdMeetingSummary,
+    } = useScheduleContext();
+
+    const handleApply = async () => {
         console.log("Save button clicked");
-        onClose();
+        const postData = {
+            '_id' : activeMeetingId,
+            'meetingSubject': edMeetingSubject,
+            'scheduleDate': edScheduledDate,
+            'scheduledLocation': edScheduledLocation,
+            'scheduledStartTime': edScheduledStartTime,
+            'scheduledEndTime': edScheduledEndTime,
+            'selectedPriority': edSelectedPriority,
+            'meetingMinutes':  edMeetingMinutes,
+            'meetingSummary': edMeetingSummary,
+        };
+        console.log(postData)
+        try {
+            const response = await fetch(getBaseUrl() + 'schedule/update_meeting', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+                body: JSON.stringify(postData),
+            });
+            const responseData = await response.json();
+            if(responseData.success) {
+                fetchMeetings();
+                onClose();
+                console.log(responseData.message);
+            }
+            else {
+                console.log(responseData.message);
+            }
+        } catch (e) {
+            console.log("error occured while deleting Meeting : " + e)
+        }
+        
     }
 
     const handleClose = () => {
@@ -34,8 +75,8 @@ const EditMeeting = ({ open, onClose }) => {
                                 fullWidth
                                 label="Meeting Title"
                                 variant="outlined"
-                                value={meetingTitle}
-                                onChange={(e) => setMeetingTitle(e.target.value)}
+                                value={edMeetingSubject}
+                                onChange={(e) => setEdMeetingSubject(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -44,8 +85,8 @@ const EditMeeting = ({ open, onClose }) => {
                                 label="Meeting Date"
                                 variant="outlined"
                                 type="date"
-                                value={meetingDate}
-                                onChange={(e) => setMeetingDate(e.target.value)}
+                                value={edScheduledDate}
+                                onChange={(e) => setEdScheduledDate(e.target.value)}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -56,9 +97,9 @@ const EditMeeting = ({ open, onClose }) => {
                                 fullWidth
                                 label="Meeting Location"
                                 variant="outlined"
-                                type="date"
-                                value={meetingDate}
-                                onChange={(e) => setMeetingDate(e.target.value)}
+                                type="text"
+                                value={edScheduledLocation}
+                                onChange={(e) => setEdScheduledLocation(e.target.value)}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -70,8 +111,8 @@ const EditMeeting = ({ open, onClose }) => {
                                 label="Start Time"
                                 variant="outlined"
                                 type="time"
-                                value={startTime}
-                                onChange={(e) => setStartTime(e.target.value)}
+                                value={edScheduledStartTime}
+                                onChange={(e) => setEdScheduledStartTime(e.target.value)}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -83,11 +124,41 @@ const EditMeeting = ({ open, onClose }) => {
                                 label="End Time"
                                 variant="outlined"
                                 type="time"
-                                value={endTime}
-                                onChange={(e) => setEndTime(e.target.value)}
+                                value={edScheduledEndTime}
+                                onChange={(e) => setEdScheduledEndTime(e.target.value)}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Minutes of Meeting"
+                                variant="outlined"
+                                type="text"
+                                value={edMeetingMinutes}
+                                onChange={(e) => setEdMeetingMinutes(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                multiline
+                                rows={4}
+                            />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <TextField
+                                fullWidth
+                                label="Meeting Summary"
+                                variant="outlined"
+                                type="text"
+                                value={edMeetingSummary}
+                                onChange={(e) => setEdMeetingSummary(e.target.value)}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                multiline
+                                rows={4}
                             />
                         </Grid>
                         {/* <Grid item xs={6}>

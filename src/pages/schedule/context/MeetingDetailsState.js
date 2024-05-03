@@ -3,7 +3,7 @@ import react, {useState} from 'react';
 export const useMeetingDetailsState = () => {
 
   const [mdMeetingSubject, setMdMeetingSubject] = useState('');
-  const [mdScheduledDate, setMdScheduledDate] = useState('');
+  const [mdScheduledDate, setMdScheduledDate] = useState();
   const [mdScheduledLocation, setMdScheduledLocation] = useState('');
   const [mdScheduledStartTime, setMdScheduledStartTime] = useState('');
   const [mdScheduledEndTime, setMdScheduledEndTime] = useState('');
@@ -13,6 +13,19 @@ export const useMeetingDetailsState = () => {
   const [mdSelectedPriority, setMdSelectedPriority] = useState(null);
   const [mdMeetingMinutes, setMdMeetingMinutes] = useState("");
   const [mdMeetingSummary, setMdMeetingSummary] = useState("");
+
+
+  const [edMeetingSubject, setEdMeetingSubject] = useState('');
+  const [edScheduledDate, setEdScheduledDate] = useState();
+  const [edScheduledLocation, setEdScheduledLocation] = useState('');
+  const [edScheduledStartTime, setEdScheduledStartTime] = useState('');
+  const [edScheduledEndTime, setEdScheduledEndTime] = useState('');
+  const [edSelectedGroups, setEdSelectedGroups] = useState([]);
+  const [edSelectedDepartments, setEdSelectedDepartments] = useState('');
+  const [edSelectedUsers, setEdSelectedUsers] = useState([]);
+  const [edSelectedPriority, setEdSelectedPriority] = useState([]);
+  const [edMeetingMinutes, setEdMeetingMinutes] = useState('');
+  const [edMeetingSummary, setEdMeetingSummary] = useState('');
 
     return {
       mdMeetingSubject, setMdMeetingSubject,
@@ -26,5 +39,17 @@ export const useMeetingDetailsState = () => {
       mdSelectedPriority, setMdSelectedPriority,
       mdMeetingMinutes, setMdMeetingMinutes,
       mdMeetingSummary, setMdMeetingSummary,
+
+      edMeetingSubject, setEdMeetingSubject,
+      edScheduledDate, setEdScheduledDate,
+      edScheduledLocation, setEdScheduledLocation,
+      edScheduledStartTime, setEdScheduledStartTime,
+      edScheduledEndTime, setEdScheduledEndTime,
+      edSelectedGroups, setEdSelectedGroups,
+      edSelectedDepartments, setEdSelectedDepartments,
+      edSelectedUsers, setEdSelectedUsers,
+      edSelectedPriority, setEdSelectedPriority,
+      edMeetingMinutes, setEdMeetingMinutes,
+      edMeetingSummary, setEdMeetingSummary,
     };
 };
