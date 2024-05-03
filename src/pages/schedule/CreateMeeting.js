@@ -137,34 +137,52 @@ const CreateMeeting = ({ open, onClose}) => {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <Select
+                    <Grid item xs={12} sm={6}>
+                        <TextField
                             className="mt-3"
-                            name="groupId"
-                            type="text"
-                            placeholder="Select Meeting Group"
-                            closeMenuOnSelect={true}
+                            fullWidth 
+                            select
+                            SelectProps={{
+                                native: true,
+                            }}
+                            label="Select Group"
+                            name="meetingGroups"
                             options={meetingGroups}
-                            onChange={(selected) => setSelectedGroups(selected)}
-                            InputLabelProps={{
-                                shrink: true,
+                            SelectDisplayProps={{
+                                multiple: true,
                             }}
-                        />
+                            value={selectedGroups}
+                            onChange={(e) => {
+                                const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
+                                setSelectedGroups(selectedOptions);
+                            }}
+                        >
+                            <option value=""> </option>
+                                {meetingGroups.map((group) => (
+                                <option value={group.value}>
+                                    {group.label}
+                                </option>
+                            ))}
+                        </TextField>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Select
+                    <Grid item xs={12} sm={6}>
+                        <TextField
                             className="mt-3"
-                            name="priority"
-                            type="text"
-                            placeholder="Priority"
-                            closeMenuOnSelect={true}
-                            options={priorities}
-                            value={selectedPriority}
-                            onChange={(selected) => setSelectedPriority(selected)}
-                            InputLabelProps={{
-                                shrink: true,
+                            fullWidth
+                            select
+                            SelectProps={{
+                                native: true,
                             }}
-                        />
+                            label="Priority"
+                            name="Priority"
+                            value={selectedPriority}
+                            onChange={(e) => setSelectedPriority(e.target.value)}
+                        >
+                            <option value=""> </option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </TextField>
                     </Grid>
                 </Grid>
             </DialogContent>
