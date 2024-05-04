@@ -27,6 +27,7 @@ const MeetingDetails = () => {
         mdMeetingSummary, setMdMeetingSummary,
 
         fetchMeetings,
+        updateMeetingVariables,
 
         edMeetingSubject, setEdMeetingSubject,
         edScheduledDate, setEdScheduledDate,
@@ -44,41 +45,7 @@ const MeetingDetails = () => {
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     useEffect(() => {
-        if (activeMeetingId !== null) {
-            const activeObject = allEvents.find(
-                (obj) => obj._id === activeMeetingId
-            );
-            if (activeObject) {
-                setMdMeetingSubject(activeObject.title);
-                const dateFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-                setMdScheduledDate(activeObject.start.toLocaleDateString('en-US', dateFormatOptions));
-                setMdScheduledStartTime(
-                    activeObject.start.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    })
-                );
-                setMdScheduledEndTime(
-                    activeObject.end.toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    })
-                );
-                setMdScheduledLocation(activeObject.location);
-                setMdSelectedPriority(activeObject.priority);
-                setMdMeetingMinutes(activeObject.minutesOfMeeting);
-                setMdMeetingSummary(activeObject.summary);
-
-                setEdMeetingSubject(activeObject.title);
-                setEdScheduledDate(activeObject.start.toISOString().split('T')[0]);
-                setEdScheduledStartTime(activeObject.start.toTimeString().slice(0, 5));
-                setEdScheduledEndTime(activeObject.end.toTimeString().slice(0, 5));
-                setEdScheduledLocation(activeObject.location);
-                setEdSelectedPriority(activeObject.priority);
-                setEdMeetingMinutes(activeObject.minutesOfMeeting);
-                setEdMeetingSummary(activeObject.summary);
-            }
-        }
+        updateMeetingVariables();
     }, [activeMeetingId]);
 
     const handleButtonClick = (index) => {

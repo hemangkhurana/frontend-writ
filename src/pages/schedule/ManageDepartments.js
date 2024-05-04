@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Paper, Container, Typography, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { Grid, TextField, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { Grid, TextField, MenuItem, InputLabel, FormControl } from '@mui/material';
+import Select from 'react-select';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,6 +10,7 @@ import { headerNavbarWrapper } from "../../components/MainPage/headerNavbarWrapp
 import { getBaseUrl } from "../../utils";
 import { Link } from "react-router-dom";
 import { ContactPageSharp } from "@mui/icons-material";
+import makeAnimated from 'react-select/animated';
 
 const ManageDepartments = () => {
     const [departmentId, setDepartmentId] = useState('');
@@ -26,6 +28,7 @@ const ManageDepartments = () => {
     const [isEditDialogOpen, seEditDialogOpen] = useState(false);
     const [deleteIndex, setDeleteIndex] = useState();
     const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const animatedComponents = makeAnimated();
 
    const {
         usersList,setUsersList,
@@ -128,10 +131,9 @@ const ManageDepartments = () => {
             } catch (error) {
                 console.log("Error during creating new department");
             }
-
-            setDepartmentName('');
-            setDepartmentDescription('');
-            setDepartmentUsers([]);
+            
+            handleReset();
+            
         }
     };
 
@@ -141,15 +143,23 @@ const ManageDepartments = () => {
         setEditDepartmentName(newDepArr[index].departmentName);
         setEditDepartmentDescription(newDepArr[index].departmentDescription);
         setEditDepartmentUsers(newDepArr[index].departmentUsers);
-        // console.log(editDepartmentUsers);
+        console.log("---------sgerg---")
+        console.log(editDepartmentUsers);
+        console.log("------------");
+        console.log(departmentUsers);
 
         seEditDialogOpen(true);
     };
 
     
     const handleSaveEdit = async () => {
-        const postData = {'_id': editDepartmentId, 'departmentName' : editDepartmentName, 'departmentDescription' : editDepartmentDescription,}
+        const postData = {'_id': editDepartmentId, 'departmentName' : editDepartmentName, 'departmentDescription' : editDepartmentDescription,'departmentUsers' : editDepartmentUsers}
+        if (editDepartmentName === '' || editDepartmentDescription === '' || editDepartmentUsers.length === 0) {
+            alert("Please fill all information");
+            return;
+        }
         try {
+
             const response = await fetch(getBaseUrl() + 'schedule/update_department', {
                 method: 'POST',
                 headers: {
@@ -166,6 +176,7 @@ const ManageDepartments = () => {
                 setEditDepartmentId('');
                 setEditDepartmentName('');
                 setEditDepartmentDescription('');
+                setEditDepartmentUsers([]);
                 fetchData();
             }
         } catch (error) {
@@ -214,10 +225,20 @@ const ManageDepartments = () => {
         }
     };
 
-    const handleOptionChange = (event) => {
-        setDepartmentUsers(event.target.value);
+    const options = usersList.map((user) => ({ value: user.value, label: user.label }));
+    const handleOptionChange = (selectedOption) => {
+        setDepartmentUsers(selectedOption);
+    };
+    const handleEditOptionChange = (selectedOption) => {
+        setEditDepartmentUsers(selectedOption);
     };
 
+    const handleReset = () => {
+        setDepartmentName('');
+        setDepartmentDescription('');
+        setDepartmentUsers([]);
+    };
+    
     return (
         <Container component='main' maxWidth='sm' sx={{ mb: 4 }}>
             <Paper
@@ -258,32 +279,40 @@ const ManageDepartments = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <FormControl fullWidth>
-                        <InputLabel>Select Options</InputLabel>
                         <Select
-                            value={departmentUsers}
-                            label="Select Options"
-                            multiple
-                            onChange={handleOptionChange}
-                        >
-                            {usersList.map((option) => (
-                            <MenuItem key={option.value} value={option}>
-                                {option.label}
-                            </MenuItem>
-                            ))}
-                        </Select>
-                        </FormControl>
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti // Enables multi-selection
+                            value={departmentUsers} // State variable for selected users
+                            onChange={handleOptionChange} // Function to update selected users
+                            options={options} // Array of option objects with 'value' and 'label'
+                            placeholder="Select Users"
+                        />
                     </Grid>
 
                 </Grid>
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    onClick={handleAddEntry}
-                    style={{ margin: '10px 0 20px 0'}}
-                >
-                    Add Entry
-                </Button>
+                
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddEntry}
+                        style={{ margin: '10px 0 20px 0' }}
+                        disabled={departmentName === '' || departmentDescription === '' || departmentUsers.length === 0}
+                    >
+                        Add Entry
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleReset}
+                        style={{ margin: '10px 0 20px 0' }}
+                        disabled={departmentName === '' &&  departmentDescription === '' && departmentUsers.length === 0}
+                    >
+                        Reset
+                    </Button>
+                </div>
                 
                 {newDepArr.map((item, index) => (
                     <Paper variant='outlined' style={{ padding: '10px', marginTop: '10px', position: 'relative' }}>
@@ -325,30 +354,32 @@ const ManageDepartments = () => {
                             onChange={(e) => setEditDepartmentDescription(e.target.value)}
                             sx={{
                                 borderRadius: '0 0 50px 50px',
-                                mt:2
+                                mt:2,
+                                marginBottom: '12px' 
                             }}
                         />
 
-                        {/* <FormControl fullWidth sx={{ mt: 2 }}>
-                            <InputLabel >Department Users</InputLabel>
+                        <FormControl fullWidth>
                             <Select
-                                multiple
-                                value={editDepartmentUsers} // Set selected users
-                                label="Department Users"
-                                onChange={(event) => setEditDepartmentUsers(event.target.value)}
-                                >
-                                {usersList.map((option) => {
-                                    const isSelected = editDepartmentUsers.some((user) => user.value === option.value);
-                                    return (
-                                    <MenuItem key={option.value} value={option} selected={isSelected}>
-                                        {option.label}
-                                    </MenuItem>
-                                    );
-                                })}
-                            </Select>
-                        </FormControl> */}
+                                closeMenuOnSelect={false}
+                                components={animatedComponents}
+                                isMulti
+                                defaultValue={editDepartmentUsers}
+                                // value={editDepartmentUsers}
+                                onChange={handleEditOptionChange}
+                                options={options}
+                                placeholder="Select Users"
+                                menuShouldScrollIntoView={false} // Disable menu scrolling
+                                menuPosition="fixed"
+                                styles={{
+                                    menu: (base) => ({ ...base, maxHeight: '300px' }), // Set a fixed height for the menu
+                                  }}
+                            />
+                        </FormControl>
+
 
                     </DialogContent>
+
                     <DialogActions>
                         <Button onClick={handleCancelEdit} color="primary">
                             Cancel

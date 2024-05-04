@@ -8,6 +8,7 @@ const EditMeeting = ({ open, onClose }) => {
     const {
         activeMeetingId, setActiveMeetingId,
         fetchMeetings,
+        updateMeetingVariables,
 
         edMeetingSubject, setEdMeetingSubject,
         edScheduledDate, setEdScheduledDate,
@@ -48,6 +49,7 @@ const EditMeeting = ({ open, onClose }) => {
             const responseData = await response.json();
             if(responseData.success) {
                 fetchMeetings();
+                updateMeetingVariables();
                 onClose();
                 console.log(responseData.message);
             }
